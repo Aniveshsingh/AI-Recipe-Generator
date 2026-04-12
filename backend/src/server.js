@@ -14,7 +14,13 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin:
+      "https://ai-recipe-generator-ltx9qu7m7-aniveshsingh1242-3035s-projects.vercel.app",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 connectDB();
