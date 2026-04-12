@@ -5,6 +5,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const API = import.meta.env.VITE_API_URL;
   // auto login when refresh
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -18,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/auth/login", {
+      const res = await fetch(`${API}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/auth/signup", {
+      const res = await fetch(`${API}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
