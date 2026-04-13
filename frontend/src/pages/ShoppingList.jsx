@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ShoppingCart, Plus, X, Check, Trash2 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
-import { dummyShoppingListItems } from "../data/dummyData";
+// import { dummyShoppingListItems } from "../data/dummyData";
 import { apiFetch } from "../utils/api";
 
 const CATEGORIES = [
@@ -12,6 +12,8 @@ const CATEGORIES = [
   "Grains",
   "Spices",
   "Beverages",
+  "Vegies",
+  "Fruits",
   "Other",
 ];
 
@@ -19,37 +21,6 @@ const ShoppingList = () => {
   const [items, setItems] = useState([]);
   const [groupedItems, setGroupedItems] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
-
-  useEffect(() => {
-    loadShoppingList();
-  }, []);
-
-  const loadShoppingList = async () => {
-    try {
-      const res = await apiFetch("/shoppingList");
-      const data = await res.json();
-
-      if (!Array.isArray(data)) {
-        console.error("Invalid data:", data);
-        return;
-      }
-
-      const formatted = data.map((item) => ({
-        id: item._id,
-        ingredient_name: item.ingredient_name,
-        quantity: item.quantity,
-        unit: item.unit,
-        category: item.category || "Other",
-        is_checked: item.is_checked,
-        from_meal_plan: item.from_meal_plan,
-      }));
-
-      setItems(formatted);
-      organizeByCategory(formatted);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const organizeByCategory = (itemsList) => {
     const grouped = {};
@@ -62,6 +33,36 @@ const ShoppingList = () => {
     });
     setGroupedItems(grouped);
   };
+
+  useEffect(() => {
+    async () => {
+      try {
+        const res = await apiFetch("/shoppingList");
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          console.error("Invalid data:", data);
+          return;
+        }
+        console.log("data:", data);
+        const formatted = data.map((item) => ({
+          id: item._id,
+          ingredient_name: item.ingredient_name,
+          quantity: item.quantity,
+          unit: item.unit,
+          category: item.category || "Other",
+          is_checked: item.is_checked,
+          from_meal_plan: item.from_meal_plan,
+        }));
+
+        setItems(formatted);
+        console.log("items:", items);
+        organizeByCategory(formatted);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  }, []);
 
   const handleToggleChecked = (id) => {
     // UI-only toggle

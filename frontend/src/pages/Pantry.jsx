@@ -3,7 +3,7 @@ import { Plus, Search, X, Calendar, AlertCircle } from "lucide-react";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
-import { dummyPantryItems, getExpiringItems } from "../data/dummyData";
+import { getExpiringItems } from "../data/dummyData";
 import { apiFetch } from "../utils/api";
 
 const CATEGORIES = [
@@ -24,59 +24,61 @@ const Pantry = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [expiringItems, setExpiringItems] = useState([]);
 
-  const fetchPantryItems = async () => {
-    try {
-      const res = await apiFetch("/pantry");
-      const data = await res.json();
-
-      const formatted = data.map((item) => ({
-        ...item,
-        id: item._id,
-        expiry_date: item.expiry_date ? item.expiry_date.split("T")[0] : null,
-      }));
-
-      setItems(formatted);
-
-      // calculate expiring items (same logic as before but dynamic)
-      const today = new Date();
-      const next7Days = new Date();
-      next7Days.setDate(today.getDate() + 7);
-
-      const expiring = formatted.filter((item) => {
-        if (!item.expiry_date) return false;
-        const date = new Date(item.expiry_date);
-        return date >= today && date <= next7Days;
-      });
-
-      setExpiringItems(expiring);
-    } catch (error) {
-      console.error(error);
-    }
-  };
   useEffect(() => {
-    // Load dummy data
+    const fetchPantryItems = async () => {
+      try {
+        const res = await apiFetch("/pantry");
+        const data = await res.json();
+
+        const formatted = data.map((item) => ({
+          ...item,
+          id: item._id,
+          expiry_date: item.expiry_date ? item.expiry_date.split("T")[0] : null,
+        }));
+
+        setItems(formatted);
+
+        // calculate expiring items (same logic as before but dynamic)
+        const today = new Date();
+        const next7Days = new Date();
+        next7Days.setDate(today.getDate() + 7);
+
+        const expiring = formatted.filter((item) => {
+          if (!item.expiry_date) return false;
+          const date = new Date(item.expiry_date);
+          return date >= today && date <= next7Days;
+        });
+
+        setExpiringItems(expiring);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     fetchPantryItems();
   }, []);
 
   useEffect(() => {
+    const filterItems = () => {
+      let filtered = [...items];
+
+      if (searchQuery) {
+        filtered = filtered.filter((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
+      }
+
+      if (selectedCategory !== "All") {
+        filtered = filtered.filter(
+          (item) => item.category === selectedCategory,
+        );
+      }
+
+      setFilteredItems(filtered);
+    };
+
     filterItems();
   }, [items, searchQuery, selectedCategory]);
-
-  const filterItems = () => {
-    let filtered = [...items];
-
-    if (searchQuery) {
-      filtered = filtered.filter((item) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-    }
-
-    if (selectedCategory !== "All") {
-      filtered = filtered.filter((item) => item.category === selectedCategory);
-    }
-
-    setFilteredItems(filtered);
-  };
 
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this item?")) return;

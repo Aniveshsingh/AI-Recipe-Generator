@@ -1,4 +1,4 @@
-const BASE_URL = "https://ai-recipe-generator-dvhf.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem("token");

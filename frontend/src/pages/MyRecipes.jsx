@@ -27,54 +27,59 @@ const MyRecipes = () => {
   ];
   const difficulties = ["All", "easy", "medium", "hard"];
 
-  const fetchRecipes = async () => {
-    try {
-      const res = await apiFetch("/recipes");
-      const data = await res.json();
-      console.log(data);
-
-      const formatted = data.map((item) => ({
-        ...item,
-        id: item._id,
-      }));
-
-      setRecipes(formatted);
-      setFilteredRecipes(formatted);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const res = await apiFetch("/recipes");
+        const data = await res.json();
+
+        const formatted = data.map((item) => ({
+          ...item,
+          id: item._id,
+        }));
+
+        setRecipes(formatted);
+        setFilteredRecipes(formatted);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     // Load dummy recipes
     // setRecipes(dummyRecipes);
     fetchRecipes();
   }, []);
 
   useEffect(() => {
-    let filtered = [...recipes];
+    const filterRecipes = () => {
+      let filtered = [...recipes];
 
-    if (searchQuery) {
-      filtered = filtered.filter(
-        (recipe) =>
-          recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          recipe.description?.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-    }
+      if (searchQuery) {
+        filtered = filtered.filter(
+          (recipe) =>
+            recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            recipe.description
+              ?.toLowerCase()
+              .includes(searchQuery.toLowerCase()),
+        );
+      }
 
-    if (selectedCuisine !== "All") {
-      filtered = filtered.filter(
-        (recipe) => recipe.cuisine_type === selectedCuisine,
-      );
-    }
+      if (selectedCuisine !== "All") {
+        filtered = filtered.filter(
+          (recipe) => recipe.cuisine_type === selectedCuisine,
+        );
+      }
 
-    if (selectedDifficulty !== "All") {
-      filtered = filtered.filter(
-        (recipe) => recipe.difficulty === selectedDifficulty,
-      );
-    }
+      if (selectedDifficulty !== "All") {
+        filtered = filtered.filter(
+          (recipe) => recipe.difficulty === selectedDifficulty,
+        );
+      }
 
-    setFilteredRecipes(filtered);
+      setFilteredRecipes(filtered);
+    };
+
+    filterRecipes();
   }, [recipes, searchQuery, selectedCuisine, selectedDifficulty]);
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this recipe?")) return;

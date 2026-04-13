@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ChefHat, Sparkles, Plus, X, Clock, Users } from "lucide-react";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
-import { dummyPreferences, dummyGeneratedRecipe } from "../data/dummyData";
+import { dummyPreferences } from "../data/dummyData";
 import { apiFetch } from "../utils/api";
 
 const CUISINES = [
@@ -42,7 +42,7 @@ const RecipeGenerator = () => {
   const [generating, setGenerating] = useState(false);
   const [generatedRecipe, setGeneratedRecipe] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [preferencesLoaded, setPreferencesLoaded] = useState(false);
+  // const [preferencesLoaded, setPreferencesLoaded] = useState(false);
 
   // Load user preferences on component mount
   useEffect(() => {
@@ -106,12 +106,26 @@ const RecipeGenerator = () => {
 
       const data = await res.json();
 
+      // 🔥 HANDLE ERROR RESPONSE
+      if (!res.ok) {
+        console.error("Backend error:", data);
+        toast.error(data.message || "Failed to generate recipe");
+        return;
+      }
+
+      // 🔥 HANDLE INVALID RESPONSE
+      if (!data || !data.recipe) {
+        console.error("Invalid response:", data);
+        toast.error("AI failed to generate recipe");
+        return;
+      }
+
       let recipe = data.recipe;
 
       recipe = {
         ...recipe,
-        prepTime: recipe.prep_time,
-        cookTime: recipe.cook_time,
+        prepTime: recipe.prepTime ?? recipe.prep_time ?? 0,
+        cookTime: recipe.cookTime ?? recipe.cook_time ?? 0,
       };
 
       setGeneratedRecipe(recipe);
@@ -127,6 +141,7 @@ const RecipeGenerator = () => {
 
   const handleSaveRecipe = async () => {
     try {
+      setSaving(true);
       const payload = {
         ...generatedRecipe,
         prep_time: generatedRecipe.prepTime,
@@ -140,9 +155,12 @@ const RecipeGenerator = () => {
       if (!res.ok) throw new Error();
 
       toast.success("Recipe saved!");
+      setGeneratedRecipe(null);
     } catch (error) {
       console.error(error);
       toast.error("Failed to save recipe");
+    } finally {
+      setSaving(false);
     }
   };
 

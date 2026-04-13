@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
-import { getRecipeById } from "../data/dummyData";
+import { apiFetch } from "../utils/api";
 
 const RecipeDetail = () => {
   const { id } = useParams();
@@ -20,15 +20,27 @@ const RecipeDetail = () => {
   const [checkedIngredients, setCheckedIngredients] = useState(new Set());
 
   useEffect(() => {
-    const recipeData = getRecipeById(parseInt(id));
-    if (recipeData) {
-      setRecipe(recipeData);
-      setServings(recipeData.servings || 4);
-    } else {
-      toast.error("Recipe not found");
-      navigate("/recipes");
-    }
-  }, [id]);
+    const fetchRecipeData = async () => {
+      try {
+        const res = await apiFetch(`/recipes/${id}`);
+        const recipeData = await res.json();
+
+        if (recipeData) {
+          setRecipe(recipeData);
+          setServings(recipeData.servings || 4);
+        } else {
+          toast.error("Recipe not found");
+          navigate("/recipes");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load recipe");
+        navigate("/recipes");
+      }
+    };
+
+    fetchRecipeData();
+  }, [id, navigate]);
 
   const handleDelete = () => {
     if (!confirm("Are you sure you want to delete this recipe?")) return;

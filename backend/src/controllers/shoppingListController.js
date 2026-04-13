@@ -25,7 +25,7 @@ CREATE ITEM
 */
 export const createShoppingListItem = async (req, res) => {
   try {
-    const item = new PantryItem({
+    const item = new ShoppingListItem({
       ...req.body,
       user_id: req.user._id,
     });
