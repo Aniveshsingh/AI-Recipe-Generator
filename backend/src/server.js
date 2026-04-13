@@ -19,6 +19,7 @@ app.use(
     origin: [
       "https://ai-recipe-generator-ltx9qu7m7-aniveshsingh1242-3035s-projects.vercel.app",
       "https://ai-recipe-generator-mu-rouge.vercel.app",
+      "https://ai-mealmatrix.vercel.app",
     ],
     credentials: true,
   }),
