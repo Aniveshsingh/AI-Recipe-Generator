@@ -16,8 +16,10 @@ const app = express();
 
 app.use(
   cors({
-    origin:
+    origin: [
       "https://ai-recipe-generator-ltx9qu7m7-aniveshsingh1242-3035s-projects.vercel.app",
+      "https://ai-recipe-generator-mu-rouge.vercel.app",
+    ],
     credentials: true,
   }),
 );
