@@ -19,6 +19,7 @@ import RecipeDetail from "./pages/RecipeDetail";
 import ShoppingList from "./pages/ShoppingList";
 import Settings from "./pages/Settings";
 import MealPlanner from "./pages/MealPlanner";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/" element={<LandingPage />} />
 
           {/* Protected Routes */}
           <Route
