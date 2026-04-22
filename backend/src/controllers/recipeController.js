@@ -1,4 +1,6 @@
+import GeneratedRecipe from "../models/GeneratedRecipe.model.js";
 import Recipe from "../models/Recipe.model.js";
+import { getFoodImage } from "../services/imageService.js";
 
 /*
 GET ALL RECIPES
@@ -117,6 +119,58 @@ export const deleteRecipe = async (req, res) => {
     res.status(500).json({
       message: "Failed to delete recipe",
       error: error.message,
+    });
+  }
+};
+
+export const saveRecipe = async (req, res) => {
+  try {
+    const recipe = req.body.recipe;
+
+    if (!recipe || !recipe.name || !recipe.ingredients) {
+      return res.status(400).json({
+        message: "Invalid recipe data",
+      });
+    }
+
+    let image = null;
+
+    try {
+      image = await getFoodImage(`${recipe.name} food photography`);
+    } catch (err) {
+      console.error("Image generation failed:", err.message);
+    }
+
+    if (!image) {
+      image = "https://via.placeholder.com/500?text=ChefHat";
+    }
+
+    // 🔥 CLEAN DATA
+    const cleanRecipe = {
+      ...recipe,
+      prep_time: recipe.prepTime ?? recipe.prep_time,
+      cook_time: recipe.cookTime ?? recipe.cook_time,
+    };
+
+    delete cleanRecipe.prepTime;
+    delete cleanRecipe.cookTime;
+
+    const saved = await Recipe.create({
+      ...cleanRecipe,
+      image_url: image,
+      user_id: req.user._id,
+    });
+    console.log(saved);
+    res.json({
+      message: "Recipe saved successfully",
+      recipe: saved,
+    });
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+
+    res.status(500).json({
+      message: "Save failed",
+      error: err.message,
     });
   }
 };

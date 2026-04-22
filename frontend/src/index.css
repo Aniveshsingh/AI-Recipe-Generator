@@ -1,14 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
 
 /* Modern Minimal Design System with Tailwind */
 
 @layer base {
   :root {
-    /* Primary Colors - Emerald */
-    --color-primary: 16 185 129;
-    --color-primary-dark: 5 150 105;
-    --color-primary-light: 52 211 153;
+    /* 🔶 Primary (Action) */
+    --color-orange: 249 115 22;
+    --color-orange-dark: 234 88 12;
+
+    /* 🟣 AI */
+    --color-purple: 168 85 247;
+    --color-purple-dark: 147 51 234;
+
+    /* 🟢 Nutrition */
+    --color-emerald: 16 185 129;
+    --color-emerald-dark: 5 150 105;
+
+    /* 🌑 Dark Base */
+    --color-bg: 11 11 12;
+    --color-surface: 17 24 39;
+    --color-surface-2: 15 23 42;
+
+    /* ⚪ Text */
+    --color-text: 255 255 255;
+    --color-text-muted: 156 163 175;
+  }
+
+  .dark {
+    @apply bg-[#0b0b0c] text-white;
   }
 
   * {
@@ -16,8 +36,13 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 font-sans antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    @apply font-sans antialiased;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
   }
 
   h1,
@@ -31,7 +56,6 @@
 }
 
 @layer components {
-
   /* Custom scrollbar */
   .custom-scrollbar::-webkit-scrollbar {
     @apply w-2 h-2;
@@ -48,10 +72,85 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     @apply bg-gray-400;
   }
+
+  .card-dark {
+    @apply bg-[#111827]/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg;
+  }
+
+  .btn-primary {
+    @apply bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl font-medium transition shadow-lg shadow-orange-500/20;
+  }
+
+  .btn-secondary {
+    @apply border border-gray-700 text-gray-300 px-5 py-2.5 rounded-xl hover:bg-gray-800 transition;
+  }
+
+  .input-dark {
+    @apply bg-[#111827] border border-gray-700 text-white px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-orange-500;
+  }
+
+  .tag-orange {
+    @apply bg-orange-500/10 text-orange-400 px-3 py-1 rounded-full text-xs;
+  }
+
+  .tag-purple {
+    @apply bg-purple-500/10 text-purple-400 px-3 py-1 rounded-full text-xs;
+  }
+
+  .tag-emerald {
+    @apply bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Glow Hover */
+.glow-hover:hover {
+  box-shadow: 0 0 30px rgba(255, 122, 47, 0.4);
+}
+
+/* Card Lift */
+.card-hover {
+  transition: all 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+/* Soft Glow Border */
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(120deg, #ff7a2f, #9333ea, #3b82f6);
+  opacity: 0;
+  transition: 0.4s;
+  z-index: -1;
+}
+.glow-border:hover::before {
+  opacity: 0.4;
+}
+
+/* CTA Pulse */
+.pulse-glow {
+  animation: pulseGlow 2.5s infinite;
+}
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 122, 47, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 122, 47, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 122, 47, 0.2);
   }
 }

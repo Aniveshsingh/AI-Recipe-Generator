@@ -1,3 +1,4 @@
+// meal planner page
 import { useState, useEffect } from "react";
 import { Calendar as CalendarIcon, Plus, X, ChefHat } from "lucide-react";
 import Navbar from "../components/Navbar";

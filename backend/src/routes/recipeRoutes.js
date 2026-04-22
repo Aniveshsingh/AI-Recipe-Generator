@@ -5,6 +5,7 @@ import {
   createRecipe,
   updateRecipe,
   deleteRecipe,
+  saveRecipe,
 } from "../controllers/recipeController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -15,6 +16,7 @@ router.get("/", protect, getRecipes);
 router.get("/:id", protect, getRecipeById);
 
 router.post("/", protect, createRecipe);
+router.post("/save", protect, saveRecipe);
 
 router.put("/:id", protect, updateRecipe);
 

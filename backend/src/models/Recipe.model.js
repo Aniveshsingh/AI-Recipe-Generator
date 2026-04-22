@@ -35,6 +35,7 @@ const recipeSchema = new mongoose.Schema({
   dietary_tags: [String],
   user_notes: String,
   image_url: String,
+  source_url: String,
   ingredients: [ingredientSchema],
   nutrition: nutritionSchema,
   created_at: {

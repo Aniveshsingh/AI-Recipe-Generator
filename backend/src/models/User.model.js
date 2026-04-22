@@ -15,6 +15,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    credits: {
+      type: Number,
+      default: 100,
+    },
+    creditsResetAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true },
 );

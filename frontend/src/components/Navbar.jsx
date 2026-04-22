@@ -1,3 +1,4 @@
+// Navbar component
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -8,10 +9,15 @@ import {
   ShoppingCart,
   Settings,
   LogOut,
+  LogIn,
+  Menu,
+  User,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,23 +25,32 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  useEffect(() => {
+    const handleClickOutside = () => setMenuOpen(false);
+
+    if (menuOpen) {
+      window.addEventListener("click", handleClickOutside);
+    }
+
+    return () => window.removeEventListener("click", handleClickOutside);
+  }, [menuOpen]);
   const isAuthenticated = !!user;
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-[#0b0b0c]/80 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link
             to={isAuthenticated ? "/dashboard" : "/"}
-            className="flex items-center gap-2 text-xl font-semibold text-gray-900"
+            className="flex items-center gap-2 text-lg font-semibold text-white"
           >
-            <ChefHat className="w-7 h-7 text-emerald-500" />
+            <ChefHat className="w-6 h-6 text-orange-500" />
             <span>AI Recipe Generator</span>
           </Link>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-2">
             {isAuthenticated ? (
               <>
                 <NavLink
@@ -71,47 +86,139 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <button
+                {/* <button
                   onClick={() => navigate("/")}
-                  className="px-3 py-2 text-sm text-gray-700 hover:text-emerald-600"
+                  className="px-3 py-2 text-sm text-gray-400 hover:text-white transition"
                 >
                   Home
                 </button>
 
                 <button
                   onClick={() => navigate("/login")}
-                  className="px-4 py-2 text-sm bg-emerald-500 text-white rounded-lg"
+                  className="px-4 py-2 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition"
                 >
                   Login
-                </button>
+                </button> */}
+                <>
+                  <NavLink
+                    to="/"
+                    icon={<Home className="w-4 h-4" />}
+                    label="Home"
+                  />
+                  <NavLink
+                    to="/pantry"
+                    icon={<UtensilsCrossed className="w-4 h-4" />}
+                    label="Grocery"
+                  />
+                  <NavLink
+                    to="/generate"
+                    icon={<ChefHat className="w-4 h-4" />}
+                    label="Generate"
+                  />
+                  <NavLink
+                    to="/recipes"
+                    icon={<UtensilsCrossed className="w-4 h-4" />}
+                    label="Recipes"
+                  />
+                  <NavLink
+                    to="/meal-plan"
+                    icon={<Calendar className="w-4 h-4" />}
+                    label="Meal Plan"
+                  />
+                  <NavLink
+                    to="/shopping-list"
+                    icon={<ShoppingCart className="w-4 h-4" />}
+                    label="Shopping"
+                  />
+                </>
               </>
             )}
           </div>
 
           {/* User Menu */}
-          <div className="flex items-center gap-3">
+          <div className="relative flex items-center gap-3">
             {isAuthenticated ? (
               <>
-                <Link
-                  to="/settings"
-                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <Settings className="w-5 h-5" />
-                </Link>
+                {/* 🔥 Avatar Button */}
                 <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMenuOpen(!menuOpen);
+                  }}
+                  className="relative inline-flex items-center justify-start gap-2 pl-2 pr-5  h-10 rounded-full bg-gradient-to-br from-orange-500 to-pink-500  text-white font-semibold shadow-md hover:scale-105 transition"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <div className="rounded-full flex justify-center items-center bg-black text-white w-8 h-8 ">
+                    {user?.name?.[0]?.toUpperCase() || "U"}
+                  </div>
+                  <div className="">
+                    {user?.name || "User"}
+                    <span className="absolute -bottom-1 -right-1 text-[10px] bg-black text-white px-1.5 py-[2px] rounded-full border border-white/10">
+                      {user?.credits}
+                      {console.log("user", user)}
+                    </span>
+                  </div>
+
+                  {/* 🔥 Credits Badge */}
                 </button>
+
+                {/* 🔥 Dropdown */}
+                <div
+                  className={`absolute right-0 top-14 w-56 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 shadow-xl overflow-hidden z-50 transition-all duration-300 ${
+                    menuOpen
+                      ? "opacity-100 translate-y-0 scale-100"
+                      : "opacity-0 -translate-y-2 scale-95 pointer-events-none"
+                  }`}
+                >
+                  {/* Profile Info */}
+                  <div className="px-4 py-3 border-b border-white/10">
+                    <p className="text-sm text-gray-400">Signed in as</p>
+                    <p className="text-white font-medium truncate">
+                      {user?.name || "User"}
+                    </p>
+                  </div>
+
+                  {/* Profile */}
+                  <button
+                    onClick={() => {
+                      navigate("/profile");
+                      setMenuOpen(false);
+                    }}
+                    className="flex w-full items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 transition"
+                  >
+                    <User className="w-4 h-4" />
+                    Profile
+                  </button>
+
+                  {/* Settings */}
+                  <Link
+                    to="/settings"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 transition"
+                  >
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </Link>
+
+                  {/* Logout */}
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setMenuOpen(false);
+                    }}
+                    className="flex w-full items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </div>
               </>
             ) : (
               <button
                 onClick={() => navigate("/login")}
-                className="px-4 py-2 bg-emerald-500 text-white rounded-lg"
+                className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition"
               >
-                Sign In
+                <LogIn className="w-4 h-4" />
+                <span className="hidden sm:inline">SignIn</span>
               </button>
             )}
           </div>
@@ -125,7 +232,7 @@ const NavLink = ({ to, icon, label }) => {
   return (
     <Link
       to={to}
-      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition"
     >
       {icon}
       <span>{label}</span>

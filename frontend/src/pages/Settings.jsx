@@ -1,3 +1,4 @@
+// settings page
 import { useState, useEffect } from "react";
 import { User, Lock, Trash2, Save } from "lucide-react";
 import Navbar from "../components/Navbar";

@@ -1,3 +1,4 @@
+// Auth Provider
 import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 
@@ -14,6 +15,18 @@ export const AuthProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
+  const updateUser = (updates) => {
+    setUser((prev) => {
+      if (!prev) return prev;
+
+      const updatedUser = { ...prev, ...updates };
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      return updatedUser;
+    });
+  };
 
   const login = async (email, password) => {
     try {
@@ -96,6 +109,7 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
+    updateUser,
     isAuthenticated: !!user,
   };
 

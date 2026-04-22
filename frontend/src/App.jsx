@@ -8,7 +8,6 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Pages
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
@@ -16,6 +15,9 @@ import Pantry from "./pages/Pantry";
 import RecipeGenerator from "./pages/RecipeGenerator";
 import MyRecipes from "./pages/MyRecipes";
 import RecipeDetail from "./pages/RecipeDetail";
+import EditRecipe from "./pages/EditRecipe";
+import CreateRecipe from "./pages/CreateRecipe";
+import CookingMode from "./pages/CookingMode";
 import ShoppingList from "./pages/ShoppingList";
 import Settings from "./pages/Settings";
 import MealPlanner from "./pages/MealPlanner";
@@ -26,12 +28,12 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Routes */}
+          {/* Public */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/" element={<LandingPage />} />
 
-          {/* Protected Routes */}
+          {/* Protected */}
           <Route
             path="/dashboard"
             element={
@@ -40,8 +42,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Placeholder routes - to be implemented */}
           <Route
             path="/pantry"
             element={
@@ -67,10 +67,34 @@ function App() {
             }
           />
           <Route
+            path="/recipes/create"
+            element={
+              <ProtectedRoute>
+                <CreateRecipe />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/recipes/:id"
             element={
               <ProtectedRoute>
                 <RecipeDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recipes/:id/edit"
+            element={
+              <ProtectedRoute>
+                <EditRecipe />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recipes/:id/cook"
+            element={
+              <ProtectedRoute>
+                <CookingMode />
               </ProtectedRoute>
             }
           />
@@ -98,51 +122,26 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Default redirect */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
 
-      {/* Toast Notifications */}
       <Toaster
         position="top-right"
         toastOptions={{
           duration: 3000,
           style: {
-            background: "#fff",
-            color: "#111827",
-            border: "1px solid #e5e7eb",
-            borderRadius: "0.5rem",
+            background: "#111827",
+            color: "#f3f4f6",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: "0.75rem",
           },
-          success: {
-            iconTheme: {
-              primary: "#10b981",
-              secondary: "#fff",
-            },
-          },
-          error: {
-            iconTheme: {
-              primary: "#ef4444",
-              secondary: "#fff",
-            },
-          },
+          success: { iconTheme: { primary: "#10b981", secondary: "#fff" } },
+          error: { iconTheme: { primary: "#ef4444", secondary: "#fff" } },
         }}
       />
     </AuthProvider>
   );
 }
-
-// Temporary Coming Soon component
-const ComingSoon = ({ page }) => {
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">{page}</h1>
-        <p className="text-gray-600">Coming soon...</p>
-      </div>
-    </div>
-  );
-};
 
 export default App;

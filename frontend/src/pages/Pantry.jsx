@@ -1,3 +1,4 @@
+// pantry page
 import { useState, useEffect } from "react";
 import { Plus, Search, X, Calendar, AlertCircle } from "lucide-react";
 import Navbar from "../components/Navbar";
