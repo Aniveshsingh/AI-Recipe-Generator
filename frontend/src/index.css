@@ -130,13 +130,17 @@
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(120deg, #ff7a2f, #9333ea, #3b82f6);
+  /* background: linear-gradient(120deg, #320a6b, #065084, #67c090); */
+  /* background: rgba(86, 182, 198, 0.2); */
   opacity: 0;
   transition: 0.4s;
   z-index: -1;
 }
 .glow-border:hover::before {
   opacity: 0.4;
+  box-shadow:
+    0px 0px 30px rgba(15, 130, 140, 0.8),
+    0 10px 20px black;
 }
 
 /* CTA Pulse */
