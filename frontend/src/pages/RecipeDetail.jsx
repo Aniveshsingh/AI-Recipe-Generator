@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -23,7 +23,7 @@ import {
   RotateCcw,
   FileText,
 } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import toast from "react-hot-toast";
 import { apiFetch } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
@@ -163,7 +163,7 @@ const RecipeDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0b0b0c] flex items-center justify-center">
+      <div className="min-h-screen  flex items-center justify-center">
         <div className="w-10 h-10 border-2 border-orange-500/20 border-t-orange-500 rounded-full animate-spin" />
       </div>
     );
@@ -172,12 +172,10 @@ const RecipeDetail = () => {
   if (!recipe) return null;
 
   const isPublic = recipe.visibility !== "Private";
-  const totalTime = (recipe.prep_time || 0) + (recipe.cook_time || 0);
+  // const totalTime = (recipe.prep_time || 0) + (recipe.cook_time || 0);
 
   return (
     <div className="min-h-screen bg-[#0b0b0c] text-white">
-      <Navbar />
-
       {/* ── Top Action Bar ── */}
       <div className="sticky top-16 z-30 bg-[#0b0b0c]/80 backdrop-blur-md  border-white/5">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">

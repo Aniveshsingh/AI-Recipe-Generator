@@ -1,7 +1,7 @@
 // meal planner page
 import { useState, useEffect } from "react";
 import { Calendar as CalendarIcon, Plus, X, ChefHat } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import toast from "react-hot-toast";
 import { format, startOfWeek, addDays } from "date-fns";
 // import { dummyMealPlans, dummyRecipes } from "../data/dummyData";
@@ -109,9 +109,7 @@ const MealPlanner = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
+    <div className="min-h-screen ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

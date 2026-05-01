@@ -8,8 +8,17 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// Layouts
+import LandingLayout from "./Layouts/LandingLayout";
+import AppLayout from "./Layouts/AppLayout";
+
+// Public Pages
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import LandingPage from "./pages/LandingPage";
+import Explore from "./pages/Explore";
+
+// Protected Pages
 import Dashboard from "./pages/Dashboard";
 import Pantry from "./pages/Pantry";
 import RecipeGenerator from "./pages/RecipeGenerator";
@@ -21,111 +30,62 @@ import CookingMode from "./pages/CookingMode";
 import ShoppingList from "./pages/ShoppingList";
 import Settings from "./pages/Settings";
 import MealPlanner from "./pages/MealPlanner";
-import LandingPage from "./pages/LandingPage";
+import ImportURLModal from "./components/ImportUrl";
+import GenerateWrapper from "./Layouts/GenerateWrapper";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetch(`${import.meta.env.VITE_API_URL}/health`).catch(() => {});
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public */}
+          {/* 🌍 LANDING LAYOUT */}
+          <Route element={<LandingLayout />}>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/explore" element={<Explore />} />
+            {/* <Route path="/generate" element={<RecipeGenerator />} /> */}
+          </Route>
+
+          {/* 🔐 AUTH (no navbar) */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/" element={<LandingPage />} />
 
-          {/* Protected */}
+          {/* 🚀 APP LAYOUT (protected) */}
           <Route
-            path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <AppLayout />
               </ProtectedRoute>
             }
-          />
-          <Route
-            path="/pantry"
-            element={
-              <ProtectedRoute>
-                <Pantry />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/generate"
-            element={
-              <ProtectedRoute>
-                <RecipeGenerator />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/recipes"
-            element={
-              <ProtectedRoute>
-                <MyRecipes />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/recipes/create"
-            element={
-              <ProtectedRoute>
-                <CreateRecipe />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/recipes/:id"
-            element={
-              <ProtectedRoute>
-                <RecipeDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/recipes/:id/edit"
-            element={
-              <ProtectedRoute>
-                <EditRecipe />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/recipes/:id/cook"
-            element={
-              <ProtectedRoute>
-                <CookingMode />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/meal-plan"
-            element={
-              <ProtectedRoute>
-                <MealPlanner />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/shopping-list"
-            element={
-              <ProtectedRoute>
-                <ShoppingList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            }
-          />
+          >
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/pantry" element={<Pantry />} />
+            <Route path="/recipes" element={<MyRecipes />} />
+            <Route path="/recipes/create" element={<CreateRecipe />} />
+            {/* <Route path="/recipes/import" element={<ImportURLModal />} /> */}
+            <Route path="/recipes/:id" element={<RecipeDetail />} />
+            <Route path="/recipes/:id/edit" element={<EditRecipe />} />
+            <Route path="/recipes/:id/cook" element={<CookingMode />} />
+            <Route path="/meal-plan" element={<MealPlanner />} />
+            <Route path="/shopping-list" element={<ShoppingList />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+
+          <Route path="/generate" element={<GenerateWrapper />} />
+          {/* 🔁 Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
 
+      {/* 🔔 Toasts */}
       <Toaster
         position="top-right"
         toastOptions={{

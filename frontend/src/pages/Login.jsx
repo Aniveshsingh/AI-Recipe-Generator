@@ -1,10 +1,10 @@
 // Login page
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
-import { ChefHat, Mail, Lock } from "lucide-react";
-import gsap from "gsap";
+import { ChefHat, Mail, Lock, ArrowLeft, Home } from "lucide-react";
+import GoogleAuthButton from "../context/GoogleAuth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const Login = () => {
 
     if (result.success) {
       toast.success("Welcome back!");
-      navigate("/dashboard");
+      navigate("/generate");
     } else {
       toast.error(result.message);
     }
@@ -34,17 +34,42 @@ const Login = () => {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#0F828C] rounded-2xl mb-4">
+          <div className=" flex justify-between">
+            <span
+              className="text-gray-400 flex items-center gap-1 cursor-pointer hover:text-gray-100"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              <ArrowLeft size={20} />
+              Back
+            </span>
+            <span
+              className="text-gray-400 flex items-center gap-1 cursor-pointer hover:text-gray-100"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              <Home size={20} />
+              Home
+            </span>
+          </div>
+          <div
+            className="inline-flex items-center justify-center w-16 h-16 bg-[#0F828C] rounded-2xl mb-4"
+            onClick={() => navigate("/")}
+          >
             <ChefHat className="w-9 h-9 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-white">Login</h1>
           <p className="text-gray-400 mt-2">
-            Sign in to continue to AI Recipe Generator
+            Sign in to continue to SmartChef AI
           </p>
         </div>
 
         {/* Login Form */}
         <div className="bg-gray-700 rounded-2xl shadow-sm border border-gray-200 p-8">
+          <GoogleAuthButton />
+          <span className="text-white flex justify-center p-4">OR</span>
           <form onSubmit={handleSubmit} className="space-y-5 text-white">
             {/* Email */}
             <div>
@@ -109,7 +134,6 @@ const Login = () => {
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
-
           {/* Sign Up Link */}
           <p className="text-center text-sm text-gray-200 mt-6">
             Don't have an account?{" "}

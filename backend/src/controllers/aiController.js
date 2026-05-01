@@ -1,10 +1,10 @@
 import crypto from "crypto";
 import GeneratedRecipe from "../models/GeneratedRecipe.model.js";
-import AnonUsage from "../models/AnonUsage.model.js";
+// import AnonUsage from "../models/AnonUsage.model.js";
 
 const TOKENS_PER_CREDIT = 30;
 const DAILY_CREDITS = 100;
-const ANON_FREE_GENS = 1;
+// const ANON_FREE_GENS = 1;
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 const callGroq = async (prompt) => {
@@ -96,13 +96,13 @@ const computePromptHash = ({
   return crypto.createHash("sha256").update(str).digest("hex");
 };
 
-const getClientIp = (req) => {
-  const fwd = req.headers["x-forwarded-for"];
-  if (fwd) return fwd.split(",")[0].trim();
-  return req.ip || req.socket?.remoteAddress || "unknown";
-};
+// const getClientIp = (req) => {
+//   const fwd = req.headers["x-forwarded-for"];
+//   if (fwd) return fwd.split(",")[0].trim();
+//   return req.ip || req.socket?.remoteAddress || "unknown";
+// };
 
-const ensureUserCredits = async (user) => {
+export const ensureUserCredits = async (user) => {
   const now = new Date();
   const last = user.creditsResetAt ? new Date(user.creditsResetAt) : null;
   if (!last || now - last >= ONE_DAY_MS) {
@@ -112,26 +112,26 @@ const ensureUserCredits = async (user) => {
   }
 };
 
-const incrementAnonUsage = async (ip) => {
-  const now = new Date();
-  let usage = await AnonUsage.findOne({ ip });
-  if (!usage) {
-    usage = await AnonUsage.create({
-      ip,
-      genCount: 1,
-      resetAt: new Date(now.getTime() + ONE_DAY_MS),
-    });
-    return usage;
-  }
-  if (usage.resetAt < now) {
-    usage.genCount = 1;
-    usage.resetAt = new Date(now.getTime() + ONE_DAY_MS);
-  } else {
-    usage.genCount += 1;
-  }
-  await usage.save();
-  return usage;
-};
+// const incrementAnonUsage = async (ip) => {
+//   const now = new Date();
+//   let usage = await AnonUsage.findOne({ ip });
+//   if (!usage) {
+//     usage = await AnonUsage.create({
+//       ip,
+//       genCount: 1,
+//       resetAt: new Date(now.getTime() + ONE_DAY_MS),
+//     });
+//     return usage;
+//   }
+//   if (usage.resetAt < now) {
+//     usage.genCount = 1;
+//     usage.resetAt = new Date(now.getTime() + ONE_DAY_MS);
+//   } else {
+//     usage.genCount += 1;
+//   }
+//   await usage.save();
+//   return usage;
+// };
 
 const cleanJSON = (text) => {
   let cleaned = text.replace(/```json|```/g, "").trim();
@@ -363,31 +363,41 @@ export const generateRecipe = async (req, res) => {
 
     const isRefine = mode === "refine";
     const isAuthed = !!req.user;
-
-    // Refine and explicit regenerate require a signed-in user
-    if ((isRefine || bypassCache) && !isAuthed) {
+    if (!isAuthed) {
       return res.status(401).json({
-        message: isRefine
-          ? "Sign up to refine recipes"
-          : "Sign up to regenerate recipes",
+        message: "Please login to generate recipes",
         requiresAuth: true,
       });
     }
-
-    // Anon users: enforce free-gen quota
-    let anonIp = null;
+    // Refine and explicit regenerate require a signed-in user
+    // if ((isRefine || bypassCache) && !isAuthed) {
+    //   return res.status(401).json({
+    //     message: isRefine
+    //       ? "Sign up to refine recipes"
+    //       : "Sign up to regenerate recipes",
+    //     requiresAuth: true,
+    //   });
+    // }
     if (!isAuthed) {
-      anonIp = getClientIp(req);
-      const existing = await AnonUsage.findOne({ ip: anonIp });
-      const now = new Date();
-      const quotaActive = existing && existing.resetAt > now;
-      if (quotaActive && existing.genCount >= ANON_FREE_GENS) {
-        return res.status(401).json({
-          message: "Sign up for more recipes — free limit reached",
-          requiresAuth: true,
-        });
-      }
+      return res.status(401).json({
+        message: "Please login to use this feature",
+        requiresAuth: true,
+      });
     }
+    // Anon users: enforce free-gen quota
+    // let anonIp = null;
+    // if (!isAuthed) {
+    //   anonIp = getClientIp(req);
+    //   const existing = await AnonUsage.findOne({ ip: anonIp });
+    //   const now = new Date();
+    //   const quotaActive = existing && existing.resetAt > now;
+    //   if (quotaActive && existing.genCount >= ANON_FREE_GENS) {
+    //     return res.status(401).json({
+    //       message: "Sign up for more recipes — free limit reached",
+    //       requiresAuth: true,
+    //     });
+    //   }
+    // }
 
     // Signed users: reset daily credits + check balance
     if (isAuthed) {
@@ -417,9 +427,9 @@ export const generateRecipe = async (req, res) => {
         cached.hitCount += 1;
         await cached.save();
 
-        if (!isAuthed && anonIp) {
-          await incrementAnonUsage(anonIp);
-        }
+        // if (!isAuthed && anonIp) {
+        //   await incrementAnonUsage(anonIp);
+        // }
 
         return res.json({
           recipe: cached.recipe,

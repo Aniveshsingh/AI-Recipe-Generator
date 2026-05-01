@@ -12,18 +12,16 @@ import {
   Twitter,
   Github,
   Facebook,
+  Menu,
 } from "lucide-react";
-import { useState } from "react";
+
 import { Link } from "react-router-dom";
 
 const Container = ({ children, className = "" }) => (
-  <div className={`max-w-7xl mx-auto px-4 sm:px-6  ${className}`}>
-    {children}
-  </div>
+  <div className={`max-w-7xl mx-auto ${className}`}>{children}</div>
 );
 
 export default function Landing() {
-  const [activeTab, setActiveTab] = useState("Home");
   const steps = [
     { icon: Sparkles, title: "Tell Us What You Want" },
     { icon: Brain, title: "AI Crafts the Recipe" },
@@ -47,66 +45,14 @@ export default function Landing() {
     { text: "Personal Remarks & Notes", icon: "📝" },
   ];
 
+  const row1 = featureData.slice(0, Math.ceil(featureData.length / 3));
+  const row2 = featureData.slice(
+    Math.ceil(featureData.length / 3),
+    Math.ceil((2 * featureData.length) / 3),
+  );
+  const row3 = featureData.slice(Math.ceil((2 * featureData.length) / 3));
   return (
-    <div className="relative bg-[#050816] text-white overflow-hidden ">
-      {/* 🔥 BACKGROUND */}
-      {/* <div
-        className="absolute inset-0 -z-10 
-        bg-[radial-gradient(circle_at_20%_30%,#ff7a2f22,transparent_40%),
-             radial-gradient(circle_at_80%_10%,#3b82f622,transparent_40%),
-             radial-gradient(circle_at_50%_90%,#9333ea22,transparent_60%)]"
-      /> */}
-
-      {/* ================= NAVBAR ================= */}
-      <div className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/[0.03] border-b border-white/10">
-        <Container className="">
-          <div className="max-w-7xl mx-auto flex items-center justify-between py-3">
-            <div className="flex items-center gap-2 font-semibold text-lg">
-              <div className="w-12 h-12 bg-emerald-500/10 flex justify-center items-center rounded-md">
-                <ChefHat className="text-emerald-500 stroke-2 size-10 " />
-              </div>
-              SmartChef<span className="text-emerald-500">AI</span>
-            </div>
-
-            <div className="hidden md:flex items-center gap-2 bg-white/[0.04] border border-white/10 rounded-full px-2 py-1">
-              <NavItem
-                icon={<Home size={14} />}
-                text="Home"
-                active={activeTab === "Home"}
-                onClick={() => setActiveTab("Home")}
-                to="/"
-              />
-              <NavItem
-                icon={<Sparkles size={14} />}
-                text="Generator"
-                active={activeTab === "Generator"}
-                onClick={() => {
-                  setActiveTab("Generator");
-                }}
-                to="/generate"
-              />
-              <NavItem
-                icon={<Vault size={14} />}
-                text="My Recipes"
-                active={activeTab === "Vault"}
-                onClick={() => setActiveTab("Vault")}
-                to="/recipes"
-              />
-              {/* <NavItem
-              icon={<Compass size={14} />}
-              text="Explore"
-              active={activeTab === "Explore"}
-              onClick={() => setActiveTab("Explore")}
-            /> */}
-            </div>
-
-            <div className="w-8 h-8 rounded-full bg-[#FF7A2F] flex items-center justify-center text-sm">
-              S
-            </div>
-          </div>
-        </Container>
-      </div>
-
+    <div className="relative bg-[#050816] text-white overflow-hidden max-w-screen mx-auto px-5 sm:px-6 lg:px-8">
       {/* ================= HERO ================= */}
       <section className="pt-28 pb-24 px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
@@ -127,11 +73,11 @@ export default function Landing() {
             </p>
 
             <div className="mt-10 flex gap-4 flex-wrap">
-              <button className="bg-[#0F828C] px-6 py-3 rounded-xl font-medium shadow-[0_0_30px_rgba(15,130,140,0.4)] hover:scale-105 hover:bg-[#AAFFC7]/60 hover:text-black transition">
+              <button className="bg-[#0F828C] px-6 py-3 rounded-xl font-medium shadow-[0_0_30px_rgba(15,130,140,0.4)] hover:scale-105 hover:bg-emerald-600 transition">
                 Generate a Recipe
               </button>
 
-              <button className="bg-white/5 px-6 py-3 rounded-xl border border-white/10 hover:bg-[#AAFFC7]/60 hover:text-black transition">
+              <button className="bg-white/5 px-6 py-3 rounded-xl border border-white/10 hover:bg-emerald-600 transition">
                 Resume Cooking
               </button>
             </div>
@@ -147,18 +93,18 @@ export default function Landing() {
       </section>
 
       {/* steps cards section */}
-      <section className="flex flex-col items-center justify-center gap-4 mt-10">
+      <section className=" px-5 md:px-0 flex flex-col items-center justify-center gap-4 mt-10">
         <div className="text-center text-4xl text-emerald-500 font-extrabold  ">
           The Flow
         </div>
-        <div className="text-center text-2xl text-[#0F828C] font-bold">
+        <div className="text-center text-2xl text-[#56B6C6] font-bold">
           From Idea to Plate in 5 Steps
         </div>
-        <div className="grid md:grid-cols-5 gap-6 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-3 md: xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
           {steps.map((step, i) => (
             <div
               key={i}
-              className="relative bg-white/[0.06] border border-[#0F828C] rounded-2xl  p-10  text-left card-hover glow-border hover:bg-white/[0.08]"
+              className={`relative bg-white/[0.06] border border-[#0F828C] rounded-2xl  p-10  text-left card-hover glow-border hover:bg-white/[0.08] `}
             >
               <div className="flex justify-between items-center">
                 {/* ICON */}
@@ -262,19 +208,50 @@ export default function Landing() {
 
       {/* ================= FEATURES (FIXED PILLS) ================= */}
 
-      <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
-        {featureData.map((f, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 px-4 py-2 rounded-full text-sm 
+      <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto space-y-4 md:hidden ">
+          {/* Row 1 (RTL) */}
+          <div className="overflow-hidden">
+            <div className="flex gap-4 w-max animate-marquee-right hover:[animation-play-state:paused]">
+              {[...row1, ...row1].map((f, i) => (
+                <Pill key={i} f={f} />
+              ))}
+            </div>
+          </div>
+
+          {/* Row 2 (LTR) */}
+          <div className="overflow-hidden">
+            <div className="flex gap-4 w-max animate-marquee-left">
+              {[...row2, ...row2].map((f, i) => (
+                <Pill key={i} f={f} />
+              ))}
+            </div>
+          </div>
+
+          {/* Row 3 (RTL) */}
+          <div className="overflow-hidden">
+            <div className="flex gap-4 w-max animate-marquee-right">
+              {[...row3, ...row3].map((f, i) => (
+                <Pill key={i} f={f} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden md:flex flex-wrap justify-center gap-4 ">
+          {featureData.map((f, i) => (
+            <div
+              key={i}
+              className="flex  items-center gap-2 px-4 py-2 rounded-full text-sm 
 bg-white/[0.08] border border-white/15 text-gray-200
 transition-all duration-300 cursor-pointer
 hover:border-[#0F828C]/60 hover:bg-[#0F828C]/10 hover:scale-105 hover:shadow-[0_0_20px_rgba(15,130,140,0.3)]"
-          >
-            <span>{f.icon}</span>
-            {f.text}
-          </div>
-        ))}
+            >
+              <span>{f.icon}</span>
+              {f.text}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* ================= CTA ================= */}
@@ -305,13 +282,15 @@ transition"
       </section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="border-t border-white/10 mt-24">
+      <footer className="border-t border-white/10 mt-8">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="grid md:grid-cols-4 gap-10">
             <div>
               <div className="flex items-center gap-2 font-semibold text-lg">
-                <div className="w-9 h-9 bg-white rounded-md" />
-                SmartChef<span className="text-[#FF7A2F]">AI</span>
+                <div className="w-12 h-12 bg-white/20 flex justify-center items-center rounded-md">
+                  <ChefHat className="text-emerald-500 stroke-2 size-10 " />
+                </div>
+                SmartChef<span className="text-emerald-500">AI</span>
               </div>
 
               <p className="mt-4 text-sm text-gray-400 max-w-xs">
@@ -372,15 +351,24 @@ function NavItem({ icon, text, active, onClick, to }) {
     <Link to={to}>
       <div
         onClick={onClick}
-        className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-sm cursor-pointer transition
-      ${
-        active
-          ? "bg-[#0F828C]/25 bg- text-white shadow-md"
-          : "text-gray-400 hover:text-white"
-      }`}
+        className={`flex flex-col  md:flex-row items-center gap-1 px-4 py-1.5 rounded-full text-sm cursor-pointer transition
+         ${
+           active
+             ? "md:bg-[#0F828C]/25  text-white shadow-md"
+             : "text-gray-400 hover:text-white"
+         }
+      `}
       >
-        {icon}
-        {text}
+        <span
+          className={`p-2 rounded-full md:bg-transparent md:p-0 ${
+            active
+              ? "bg-emerald-500  text-white shadow-md"
+              : "text-gray-400 hover:text-white"
+          }`}
+        >
+          {icon}
+        </span>
+        <span className="">{text}</span>
       </div>
     </Link>
   );
@@ -397,3 +385,14 @@ function Icon({ children }) {
     </div>
   );
 }
+
+const Pill = ({ f }) => (
+  <div
+    className="flex items-center gap-2 px-4 py-2 rounded-full text-sm 
+    bg-white/[0.08] border border-white/15 text-gray-200
+    whitespace-nowrap"
+  >
+    <span>{f.icon}</span>
+    {f.text}
+  </div>
+);

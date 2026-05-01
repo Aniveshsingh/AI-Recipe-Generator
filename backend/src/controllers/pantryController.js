@@ -89,12 +89,11 @@ DELETE PANTRY ITEM
 */
 export const deletePantryItem = async (req, res) => {
   try {
-    console.log("deleting id", req.params.id);
     const item = await PantryItem.findOneAndDelete({
       _id: req.params.id,
       user_id: req.user._id,
     });
-    console.log(item);
+
     if (!item) {
       return res.status(404).json({
         message: "Pantry item not found",

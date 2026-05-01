@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Plus, Minus, Save } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import toast from "react-hot-toast";
 import { apiFetch } from "../utils/api";
 
@@ -38,7 +38,9 @@ const CreateRecipe = () => {
   });
   const [ingredients, setIngredients] = useState([{ amount: "", name: "" }]);
   const [instructions, setInstructions] = useState([""]);
-
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const from = params.get("from");
   const updateForm = (key, val) => setForm((f) => ({ ...f, [key]: val }));
 
   // Ingredients
@@ -114,15 +116,21 @@ const CreateRecipe = () => {
       <div className="sticky top-0 z-30 bg-[#0b0b0c]/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <button
-            onClick={() => navigate("/recipes")}
+            onClick={() => {
+              if (from === "generate") {
+                navigate("/generate");
+              } else {
+                navigate("/recipes");
+              }
+            }}
             className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Vault
+            <ArrowLeft className="w-4 h-4" /> Back
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white text-sm font-semibold px-5 py-2 rounded-xl transition"
+            className="flex items-center gap-2 border border-orange-300 hover:bg-orange-600  text-orange-300 text-sm font-semibold px-5 py-2 rounded-xl transition"
           >
             <Save className="w-4 h-4" />
             {saving ? "Saving..." : "Save Recipe"}
@@ -297,7 +305,7 @@ const CreateRecipe = () => {
                       updateIngredient(i, "name", e.target.value)
                     }
                     placeholder="Ingredient"
-                    className="flex-1 bg-[#0d1117] border border-white/10 text-gray-200 text-sm px-3 py-2.5 rounded-xl outline-none focus:border-orange-500/40 placeholder-gray-600 transition"
+                    className="flex-1 min-w-0 bg-[#0d1117] border border-white/10 text-gray-200 text-sm px-3 py-2.5 rounded-xl outline-none focus:border-orange-500/40 placeholder-gray-600 transition"
                   />
                   <button
                     onClick={() => removeIngredient(i)}

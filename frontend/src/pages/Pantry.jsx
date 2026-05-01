@@ -1,7 +1,7 @@
 // pantry page
 import { useState, useEffect } from "react";
 import { Plus, Search, X, Calendar, AlertCircle } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import { getExpiringItems } from "../data/dummyData";
@@ -98,25 +98,25 @@ const Pantry = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
+    <div className="min-h-screen ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="md:flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Pantry</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-white">Pantry</h1>
+            <p className="text-gray-400 mt-1">
               Manage your ingredients and track expiry dates
             </p>
           </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-            Add Item
-          </button>
+          <div className="flex justify-end mt-10">
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors"
+            >
+              <Plus className="w-5 h-5" />
+              Add Item
+            </button>
+          </div>
         </div>
 
         {/* Expiring Soon Alert */}
@@ -138,7 +138,7 @@ const Pantry = () => {
         )}
 
         {/* Search and Filter */}
-        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+        <div className="bg-[#0f172a] rounded-lg border border-white/10 p-4 mb-6">
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
@@ -148,7 +148,7 @@ const Pantry = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search ingredients..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                className="w-full pl-10 pr-4 py-2 bg-[#0d1117] border border-white/10 text-gray-200 text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
               />
             </div>
 
@@ -184,7 +184,7 @@ const Pantry = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+          <div className="bg-[#111827] rounded-lg border border-white/10 p-12 text-center">
             <p className="text-gray-500">No items found</p>
           </div>
         )}
@@ -210,7 +210,7 @@ const CategoryButton = ({ label, active, onClick }) => (
     className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
       active
         ? "bg-emerald-500 text-white"
-        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+        : "bg-white/5 text-gray-400 hover:bg-gray-200"
     }`}
   >
     {label}
@@ -222,14 +222,14 @@ const PantryItemCard = ({ item, onDelete, isExpiring }) => {
 
   return (
     <div
-      className={`bg-white rounded-lg border p-4 hover:shadow-md transition-shadow ${
+      className={`bg-[#0f172a] rounded-lg border  border-white/10 p-4 hover:shadow-md transition-shadow ${
         isExpiring ? "border-amber-300" : "border-gray-200"
       }`}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900">{item.name}</h3>
-          <p className="text-sm text-gray-500 capitalize">{item.category}</p>
+          <h3 className="font-semibold text-white">{item.name}</h3>
+          <p className="text-sm text-white/80 capitalize">{item.category}</p>
         </div>
         <button
           onClick={() => onDelete(item.id)}
@@ -241,8 +241,8 @@ const PantryItemCard = ({ item, onDelete, isExpiring }) => {
 
       <div className="space-y-2">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-gray-600">Quantity:</span>
-          <span className="font-medium text-gray-900">
+          <span className="text-gray-400">Quantity:</span>
+          <span className="font-medium text-gray-200">
             {item.quantity} {item.unit}
           </span>
         </div>
@@ -251,7 +251,7 @@ const PantryItemCard = ({ item, onDelete, isExpiring }) => {
           <div className="flex items-center gap-2 text-sm">
             <Calendar className="w-4 h-4 text-gray-400" />
             <span
-              className={`${isExpired ? "text-red-600 font-medium" : isExpiring ? "text-amber-600 font-medium" : "text-gray-600"}`}
+              className={`${isExpired ? "text-red-500 font-medium" : isExpiring ? "text-amber-600 font-medium" : "text-gray-600"}`}
             >
               {isExpired ? "Expired" : "Expires"}:{" "}
               {format(new Date(item.expiry_date), "MMM dd, yyyy")}
@@ -317,9 +317,9 @@ const AddItemModal = ({ onClose, onSuccess }) => {
   };
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl max-w-md w-full p-6">
+      <div className=" bg-[#111827] border border-white/10 rounded-xl max-w-md w-full p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Add Pantry Item</h2>
+          <h2 className="text-xl font-bold text-white">Add Pantry Item</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600"
@@ -330,7 +330,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Name
             </label>
             <input
@@ -339,14 +339,15 @@ const AddItemModal = ({ onClose, onSuccess }) => {
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+              placeholder="Enter name"
+              className={`w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white placeholder:text-gray-500 text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none`}
               required
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Quantity
               </label>
               <input
@@ -356,13 +357,14 @@ const AddItemModal = ({ onClose, onSuccess }) => {
                 onChange={(e) =>
                   setFormData({ ...formData, quantity: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                placeholder="0"
+                className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 placeholder:text-gray-500 text-white text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className=" block text-sm font-medium text-white mb-2">
                 Unit
               </label>
               <select
@@ -370,7 +372,8 @@ const AddItemModal = ({ onClose, onSuccess }) => {
                 onChange={(e) =>
                   setFormData({ ...formData, unit: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                placeholder="Pieces"
+                className="relative w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
               >
                 <option value="pieces">Pieces</option>
                 <option value="kg">Kilograms</option>
@@ -385,7 +388,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Category
             </label>
             <select
@@ -393,7 +396,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+              className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white/80 text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
             >
               {CATEGORIES.map((cat) => (
                 <option key={cat} value={cat}>
@@ -404,7 +407,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Expiry Date (Optional)
             </label>
             <input
@@ -413,7 +416,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
               onChange={(e) =>
                 setFormData({ ...formData, expiry_date: e.target.value })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+              className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white/80 text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
             />
           </div>
 

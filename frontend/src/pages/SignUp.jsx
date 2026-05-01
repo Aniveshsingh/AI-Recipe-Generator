@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
-import { ChefHat, Mail, Lock, User } from "lucide-react";
+import { ChefHat, Mail, Lock, User, ArrowLeft, Home } from "lucide-react";
+import GoogleAuthButton from "../context/GoogleAuth";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -21,7 +22,7 @@ const SignUp = () => {
 
     if (result.success) {
       toast.success("Account created successfully!");
-      navigate("/dashboard");
+      navigate("/generate");
     } else {
       toast.error(result.message);
     }
@@ -34,17 +35,42 @@ const SignUp = () => {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#0F828C] rounded-2xl mb-4">
+          <div className=" flex justify-between">
+            <span
+              className="text-gray-400 flex items-center gap-1 cursor-pointer hover:text-gray-100"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              <ArrowLeft size={20} />
+              Back
+            </span>
+            <span
+              className="text-gray-400 flex items-center gap-1 cursor-pointer hover:text-gray-100"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              <Home size={20} />
+              Home
+            </span>
+          </div>
+          <div
+            className="inline-flex items-center justify-center w-16 h-16 bg-[#0F828C] rounded-2xl mb-4"
+            onClick={() => navigate("/")}
+          >
             <ChefHat className="w-9 h-9 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-200">Create Account</h1>
-          <p className="text-gray-600 mt-2">
-            Start your culinary journey with AI Recipe Generator
+          <p className="text-gray-400 mt-2">
+            Start your culinary journey with SmartChef AI
           </p>
         </div>
 
         {/* Sign Up Form */}
         <div className="bg-gray-700 rounded-2xl shadow-sm border border-gray-200 p-8">
+          <GoogleAuthButton />
+          <span className="text-white flex justify-center p-4">OR</span>
           <form onSubmit={handleSubmit} className="space-y-5 text-white">
             {/* Name */}
             <div>

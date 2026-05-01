@@ -160,7 +160,7 @@ export const saveRecipe = async (req, res) => {
       image_url: image,
       user_id: req.user._id,
     });
-    console.log(saved);
+
     res.json({
       message: "Recipe saved successfully",
       recipe: saved,

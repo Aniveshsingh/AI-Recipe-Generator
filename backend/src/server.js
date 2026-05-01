@@ -23,18 +23,23 @@ app.use(
       "https://ai-recipe-generator-ltx9qu7m7-aniveshsingh1242-3035s-projects.vercel.app",
       "https://ai-recipe-generator-mu-rouge.vercel.app",
       "https://ai-mealmatrix.vercel.app",
+      "https://ai-smartchef.vercel.app",
     ],
     credentials: true,
   }),
 );
 app.use(express.json());
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 connectDB();
 
 const PORT = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
-  res.send("AI Recipe Generator Backend Running");
+  res.send("SmartChef AI Backend Running");
 });
 
 app.use((req, res, next) => {

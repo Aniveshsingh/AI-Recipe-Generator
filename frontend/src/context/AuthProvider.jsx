@@ -4,16 +4,22 @@ import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const API = import.meta.env.VITE_API_URL;
   // auto login when refresh
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const init = async () => {
+      const token = localStorage.getItem("token");
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+      if (token) {
+        await fetchUser();
+      }
+
+      setLoading(false);
+    };
+
+    init();
   }, []);
 
   const updateUser = (updates) => {
@@ -54,7 +60,7 @@ export const AuthProvider = ({ children }) => {
 
       //  update state
       setUser(data.user);
-
+      await fetchUser();
       return { success: true };
     } catch (error) {
       console.log(error.message);
@@ -103,6 +109,26 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`${API}/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user);
+      }
+    } catch (err) {
+      console.log("Fetch user error:", err.message);
+    }
+  };
   const value = {
     user,
     loading,
@@ -110,6 +136,9 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateUser,
+    fetchUser,
+    setUser,
+
     isAuthenticated: !!user,
   };
 

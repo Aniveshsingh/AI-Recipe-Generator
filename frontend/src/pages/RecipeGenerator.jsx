@@ -18,10 +18,11 @@ import {
   Zap,
   Coins,
 } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import toast from "react-hot-toast";
 import { apiFetch } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
+import ImportURLModal from "../components/ImportUrl";
 
 // ─── Constants ───────────────────────────────
 const CUISINES = [
@@ -414,7 +415,7 @@ const RecipeResult = ({
 
 // ─── Main Component ───────────────────────────
 const RecipeGenerator = () => {
-  const { isAuthenticated, updateUser } = useAuth();
+  const { isAuthenticated, updateUser, user } = useAuth();
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -433,12 +434,21 @@ const RecipeGenerator = () => {
   const [saving, setSaving] = useState(false);
   const advancedRef = useRef(null);
   const resultRef = useRef(null);
+  const [showImport, setShowImport] = useState(false);
 
   const requireAuth = (actionLabel) => {
     toast.error(`Please sign in to ${actionLabel}`);
     setTimeout(() => navigate("/login"), 600);
   };
 
+  const requireAuthAction = () => {
+    if (!isAuthenticated) {
+      toast("Login required", { icon: "🔒" });
+      setTimeout(() => navigate("/login"), 800);
+      return false;
+    }
+    return true;
+  };
   // Close advanced prompts on outside click
   useEffect(() => {
     const handler = (e) => {
@@ -449,6 +459,12 @@ const RecipeGenerator = () => {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  useEffect(() => {
+    if (user?.credits !== undefined) {
+      setCredits(user.credits);
+    }
+  }, [user]);
 
   // Scroll to result after generation
   useEffect(() => {
@@ -474,10 +490,14 @@ const RecipeGenerator = () => {
       return;
     }
 
-    if (bypassCache && !isAuthenticated) {
-      requireAuth("regenerate recipes");
+    if (!isAuthenticated) {
+      requireAuth("generate recipes");
       return;
     }
+    // if (bypassCache && !isAuthenticated) {
+    //   requireAuth("regenerate recipes");
+    //   return;
+    // }
 
     const mode = detectMode(prompt);
 
@@ -502,19 +522,19 @@ const RecipeGenerator = () => {
       });
 
       const data = await res.json();
-
       if (data.credits !== undefined) {
         updateUser({ credits: data.credits });
       }
 
       if (res.status === 401 && data.requiresAuth) {
-        requireAuth("generate more recipes");
+        requireAuth("generate recipes");
         return;
       }
 
       if (res.status === 402) {
         toast.error(data.message || "Daily credits exhausted");
         if (typeof data.credits === "number") setCredits(data.credits);
+
         return;
       }
 
@@ -532,6 +552,7 @@ const RecipeGenerator = () => {
       setGeneratedRecipe(recipe);
       setWasCached(!!data.cached);
       if (typeof data.credits === "number") setCredits(data.credits);
+
       toast.success(
         data.cached ? "Recipe loaded from cache!" : "Recipe generated!",
       );
@@ -597,9 +618,7 @@ const RecipeGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0b0c] text-white">
-      <Navbar />
-
+    <div className="min-h-screen  text-white">
       {/* NEW CHAT button */}
       {generatedRecipe && (
         <div className="fixed top-20 right-6 z-40">
@@ -613,25 +632,30 @@ const RecipeGenerator = () => {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto px-4 pt-16 pb-20">
+      <div className="max-w-4xl mx-auto px-4 pt-22 pb-20">
         {/* ── Hero Title ── */}
         <div className="text-center mb-10">
-          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-white tracking-tight">
-            The Master
+          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-white tracking-tight">
+            Your Personal
           </h1>
-          <h2 className="text-5xl md:text-6xl font-extrabold leading-tight text-orange-500 tracking-tight mb-5">
-            AI Recipe Architect
+          <h2 className="text-3xl md:text-6xl font-extrabold leading-tight text-orange-400 tracking-tight mb-3">
+            AI CHEF
           </h2>
+          <div className=" flex justify-center items-center gap-2 text-3xl md:text-6xl font-extrabold leading-tight text-emerald-500 tracking-tight mb-5">
+            <ChefHat className="w-[30px] h-[30px] md:w-[50px] md:h-[50px]" />
+            <span className="text-white">SmartChef</span> AI
+          </div>
           <p className="text-lg text-gray-400 mb-2">
             What are we{" "}
-            <span className="text-purple-400 font-medium">cooking</span> today?
+            <span className="text-orange-400 font-medium">cooking</span> today?
           </p>
           <p className="text-sm text-gray-600 max-w-xl mx-auto leading-relaxed">
             Describe an ingredient, a mood, or a dietary goal — our{" "}
-            <span className="text-gray-400 font-medium">
-              AI-native recipe generator
+            <span className="text-white font-medium">
+              SmartChef <span className="text-emerald-500">AI</span>
             </span>{" "}
-            engine crafts a restaurant-grade dish in seconds.
+            ransforms your cravings into structured, delicious recipes
+            instantly.
           </p>
 
           {/* Credits / Free-trial chip */}
@@ -639,19 +663,18 @@ const RecipeGenerator = () => {
             {isAuthenticated ? (
               <div className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-500/20 bg-orange-500/10 text-orange-300">
                 <Coins className="w-3.5 h-3.5" />
-                {credits ?? "—"} credits left today
+                {credits ?? user?.credits ?? "—"} credits left today
               </div>
             ) : (
-              <div className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-gray-400">
-                <Sparkles className="w-3.5 h-3.5 text-purple-400" />1 free
-                recipe —{" "}
+              <div className="inline-flex items-center gap-2 text-md font-medium px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-gray-400">
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                Login to generate recipes
                 <button
-                  onClick={() => navigate("/signup")}
+                  onClick={() => navigate("/login")}
                   className="text-purple-400 hover:text-purple-300 underline underline-offset-2"
                 >
-                  sign up
-                </button>{" "}
-                for 100 daily credits
+                  Login
+                </button>
               </div>
             )}
           </div>
@@ -679,7 +702,7 @@ const RecipeGenerator = () => {
             </div>
           )}
 
-          <div className="flex items-center bg-[#0f172a] border border-white/10 rounded-2xl px-4 py-3 shadow-xl focus-within:border-orange-500/40 transition">
+          <div className="flex flex-col sm:flex-row gap-3 bg-[#0f172a] border border-white/10 rounded-2xl px-4 py-3 shadow-xl focus-within:border-orange-500/40 transition">
             <input
               type="text"
               value={inputValue}
@@ -697,27 +720,40 @@ const RecipeGenerator = () => {
               </button>
             )}
             {/* Advanced prompts toggle */}
-            <button
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="w-6 h-6 rounded-full border border-gray-700 flex items-center justify-center mr-3 hover:border-orange-400 transition text-gray-500 hover:text-orange-400"
-              title="Advanced prompts"
-            >
-              <Sparkles className="w-3 h-3" />
-            </button>
-            <button
-              onClick={() => handleGenerate()}
-              disabled={generating}
-              className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-60 text-white text-sm font-semibold px-5 py-2 rounded-xl transition shadow-lg shadow-orange-500/20 whitespace-nowrap"
-            >
-              <Sparkles className="w-4 h-4" />
-              {generating ? "Cooking..." : "Generate Magic"}
-            </button>
+            <div className="flex justify-end items-center">
+              <button
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="w-6 h-6 rounded-full border border-gray-700 flex items-center justify-center mr-3 hover:border-orange-400 transition text-gray-500 hover:text-orange-400"
+                title="Advanced prompts"
+              >
+                <Sparkles className="w-3 h-3" />
+              </button>
+              <button
+                onClick={() => {
+                  if (!requireAuthAction()) return;
+                  if (generating) return;
+
+                  handleGenerate();
+                }}
+                title={!isAuthenticated ? "Login to generate recipes" : ""}
+                className={`w-[50%] sm:w-auto flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold transition shadow-lg
+    ${
+      !isAuthenticated
+        ? "opacity-60 cursor-not-allowed bg-[#0F828C]/50 text-white"
+        : "bg-[#0F828C] hover:bg-emerald-600 text-white shadow-emerald-500/20"
+    }
+  `}
+              >
+                <Sparkles className="w-4 h-4" />
+                {generating ? "Cooking..." : "Generate Magic"}
+              </button>
+            </div>
           </div>
         </div>
 
         {/* ── Filter Panel ── */}
         <div className="bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 mb-6">
-          <div className="flex flex-wrap gap-5 items-end">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-5 items-end">
             <FilterDropdown
               label="Cuisine"
               value={filters.cuisine}
@@ -730,7 +766,7 @@ const RecipeGenerator = () => {
               <span className="text-[10px] font-semibold tracking-widest text-gray-500 uppercase">
                 Servings
               </span>
-              <div className="flex items-center bg-[#0d1117] border border-white/10 rounded-lg overflow-hidden">
+              <div className="flex justify-center py-1.5 gap-6 items-center bg-[#0d1117] border border-white/10 rounded-lg overflow-hidden">
                 <button
                   onClick={() =>
                     setFilters((f) => ({
@@ -738,18 +774,18 @@ const RecipeGenerator = () => {
                       servings: Math.max(1, f.servings - 1),
                     }))
                   }
-                  className="px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 transition text-sm"
+                  className=" text-gray-400 hover:text-white hover:bg-white/5 transition text-sm"
                 >
                   −
                 </button>
-                <span className="px-3 text-white text-sm font-medium tabular-nums">
+                <span className=" text-white text-sm font-medium tabular-nums">
                   {filters.servings}
                 </span>
                 <button
                   onClick={() =>
                     setFilters((f) => ({ ...f, servings: f.servings + 1 }))
                   }
-                  className="px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 transition text-sm"
+                  className=" text-gray-400 hover:text-white hover:bg-white/5 transition text-sm"
                 >
                   +
                 </button>
@@ -827,11 +863,40 @@ const RecipeGenerator = () => {
         {/* ── OR Buttons ── */}
         <div className="flex items-center justify-center gap-3 mb-8">
           <span className="text-gray-600 text-sm">OR:</span>
-          <button className="flex items-center gap-2 px-5 py-2 rounded-full text-sm bg-blue-500/20 text-blue-400 border border-blue-500/30 hover:bg-blue-500/30 transition">
+          <button
+            onClick={() => {
+              if (!requireAuthAction()) return;
+              if (generating) return;
+
+              setShowImport(true);
+            }}
+            title={!isAuthenticated ? "Login to use this feature" : ""}
+            className={`flex items-center gap-2 px-5 py-2 rounded-full text-sm transition
+    ${
+      !isAuthenticated
+        ? "opacity-60 cursor-not-allowed bg-blue-500/10 text-blue-300 border border-blue-500/20"
+        : "bg-blue-500/20 text-blue-400 border border-blue-500/30 hover:bg-blue-500/30"
+    }
+  `}
+          >
             <Link2 className="w-3.5 h-3.5" />
             Import from URL
           </button>
-          <button className="flex items-center gap-2 px-5 py-2 rounded-full text-sm bg-purple-500/20 text-purple-400 border border-purple-500/30 hover:bg-purple-500/30 transition">
+          <button
+            onClick={() => {
+              if (!requireAuthAction()) return;
+
+              navigate("/recipes/create?from=generate");
+            }}
+            title={!isAuthenticated ? "Login to create recipes" : ""}
+            className={`flex items-center gap-2 px-5 py-2 rounded-full text-sm transition
+    ${
+      !isAuthenticated
+        ? "opacity-60 cursor-not-allowed bg-purple-500/10 text-purple-300 border border-purple-500/20"
+        : "bg-purple-500/20 text-purple-400 border border-purple-500/30 hover:bg-purple-500/30"
+    }
+  `}
+          >
             <PenLine className="w-3.5 h-3.5" />
             Create Manually
           </button>
@@ -867,6 +932,8 @@ const RecipeGenerator = () => {
           </div>
         )}
       </div>
+      {/* Import URL Modal */}
+      {showImport && <ImportURLModal onClose={() => setShowImport(false)} />}
     </div>
   );
 };

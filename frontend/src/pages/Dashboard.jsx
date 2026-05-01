@@ -1,6 +1,6 @@
 // Dashboard
 import { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
+
 import {
   ChefHat,
   UtensilsCrossed,
@@ -8,6 +8,7 @@ import {
   ShoppingCart,
   TrendingUp,
   Clock,
+  CookingPot,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -65,25 +66,23 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
+    <div className="min-h-screen  ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">
-            Welcome back! Here's your cooking overview
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          <p className="text-white mt-1">
+            Welcome ! Here's your cooking overview
           </p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <StatCard
-            icon={<ChefHat className="w-6 h-6" />}
+            icon={<CookingPot className="w-6 h-6" />}
             label="Total Recipes"
             value={stats.totalRecipes}
-            color="emerald"
+            color="orange"
           />
           <StatCard
             icon={<UtensilsCrossed className="w-6 h-6" />}
@@ -103,10 +102,10 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Link
             to="/generate"
-            className="bg-linear-to-r from-emerald-50 to-emerald-100 text-emerald-500 p-6 rounded-xl shadow-sm hover:shadow-md transition-all group"
+            className="bg-white hover:bg-linear-to-r from-emerald-100 to-emerald-200 text-emerald-500 p-6 rounded-xl shadow-sm hover:shadow-md transition-all group"
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-lg flex bg-emerald-100 items-center justify-center group-hover:scale-110 transition-transform">
                 <ChefHat className="w-6 h-6" />
               </div>
               <div>
@@ -120,17 +119,17 @@ const Dashboard = () => {
 
           <Link
             to="/pantry"
-            className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm hover:shadow-md transition-all group"
+            className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm hover:shadow-md transition-all group hover:bg-linear-to-r from-blue-100 to-blue-200"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                <UtensilsCrossed className="w-6 h-6 text-emerald-600" />
+            <div className="flex items-center gap-4 ">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:scale-110  transition-transform">
+                <UtensilsCrossed className="w-6 h-6 text-blue-600" />
               </div>
               <div>
                 <h3 className="font-semibold text-lg text-gray-900">
                   Manage Pantry
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-blue-800 text-sm">
                   Add and track ingredients
                 </p>
               </div>
@@ -141,9 +140,9 @@ const Dashboard = () => {
         {/* Recent Recipes & Upcoming Meals */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Recipes */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <div className="bg-[#111827] rounded-xl border border-gray-500 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-white">
                 Recent Recipes
               </h2>
               <Link
@@ -160,16 +159,16 @@ const Dashboard = () => {
                   <Link
                     key={recipe.id}
                     to={`/recipes/${recipe.id}`}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors"
                   >
-                    <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                      <ChefHat className="w-6 h-6 text-emerald-600" />
+                    <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <CookingPot className="w-6 h-6 text-orange-600" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 truncate">
+                      <h3 className="font-medium text-white truncate">
                         {recipe.name}
                       </h3>
-                      <p className="text-sm text-gray-500 flex items-center gap-1">
+                      <p className="text-sm text-gray-400 flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {recipe.cook_time} mins
                       </p>
@@ -185,9 +184,9 @@ const Dashboard = () => {
           </div>
 
           {/* Upcoming Meals */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <div className="bg-[#111827] rounded-xl border border-gray-500 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-white">
                 Upcoming Meals
               </h2>
               <Link
@@ -220,7 +219,7 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">
+              <p className="text-gray-500 h-full flex items-center justify-center text-center py-8">
                 No meals planned yet
               </p>
             )}
@@ -236,10 +235,11 @@ const StatCard = ({ icon, label, value, color }) => {
     emerald: "bg-emerald-100 text-emerald-600",
     blue: "bg-blue-100 text-blue-600",
     purple: "bg-purple-100 text-purple-600",
+    orange: "bg-orange-100 text-orange-600",
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
+    <div className="bg-[#111827] rounded-xl border border-gray-500 p-6">
       <div className="flex items-center gap-4">
         <div
           className={`w-12 h-12 rounded-lg flex items-center justify-center ${colorClasses[color]}`}
@@ -247,8 +247,8 @@ const StatCard = ({ icon, label, value, color }) => {
           {icon}
         </div>
         <div>
-          <p className="text-sm text-gray-600">{label}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-sm text-white">{label}</p>
+          <p className="text-2xl font-bold text-white">{value}</p>
         </div>
       </div>
     </div>

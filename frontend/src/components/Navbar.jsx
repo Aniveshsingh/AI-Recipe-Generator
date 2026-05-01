@@ -1,5 +1,4 @@
-// Navbar component
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
   ChefHat,
@@ -7,23 +6,19 @@ import {
   UtensilsCrossed,
   Calendar,
   ShoppingCart,
-  Settings,
-  LogOut,
   LogIn,
-  Menu,
-  User,
+  CookingPot,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import UserPill from "./UserPill";
 
-const Navbar = () => {
-  const { user, logout } = useAuth();
+export const Navbar = () => {
+  const { isAuthenticated } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  // const isAuthenticated = !!user;
 
   useEffect(() => {
     const handleClickOutside = () => setMenuOpen(false);
@@ -34,191 +29,83 @@ const Navbar = () => {
 
     return () => window.removeEventListener("click", handleClickOutside);
   }, [menuOpen]);
-  const isAuthenticated = !!user;
+
+  const isActive = (path) => location.pathname === path;
+
+  const privateLinks = [
+    {
+      label: "Dashboard",
+      to: "/dashboard",
+      icon: <Home className="w-4 h-4" />,
+    },
+    {
+      label: "Pantry",
+      to: "/pantry",
+      icon: <UtensilsCrossed className="w-4 h-4" />,
+    },
+    {
+      label: "Generate",
+      to: "/generate",
+      icon: <ChefHat className="w-4 h-4" />,
+    },
+    {
+      label: "Recipes",
+      to: "/recipes",
+      icon: <CookingPot className="w-4 h-4" />,
+    },
+    // {u
+    //   label: "Meal Plan",
+    //   to: "/meal-plan",
+    //   icon: <Calendar className="w-4 h-4" />,
+    // },
+    {
+      label: "Shopping",
+      to: "/shopping-list",
+      icon: <ShoppingCart className="w-4 h-4" />,
+    },
+  ];
 
   return (
-    <nav className="bg-[#0b0b0c]/80 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+    <nav className="bg-[#050816]/80 backdrop-blur-md border-b border-white/10 fixed w-full top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link
-            to={isAuthenticated ? "/dashboard" : "/"}
+            to="/"
             className="flex items-center gap-2 text-lg font-semibold text-white"
           >
-            <ChefHat className="w-6 h-6 text-orange-500" />
-            <span>AI Recipe Generator</span>
+            <div className="w-12 h-12 bg-emerald-500/10 flex justify-center items-center rounded-md">
+              <ChefHat className="text-emerald-500 stroke-2 size-10" />
+            </div>
+            SmartChef<span className="text-emerald-500">AI</span>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center gap-2">
-            {isAuthenticated ? (
-              <>
-                <NavLink
-                  to="/dashboard"
-                  icon={<Home className="w-4 h-4" />}
-                  label="Dashboard"
-                />
-                <NavLink
-                  to="/pantry"
-                  icon={<UtensilsCrossed className="w-4 h-4" />}
-                  label="Pantry"
-                />
-                <NavLink
-                  to="/generate"
-                  icon={<ChefHat className="w-4 h-4" />}
-                  label="Generate"
-                />
-                <NavLink
-                  to="/recipes"
-                  icon={<UtensilsCrossed className="w-4 h-4" />}
-                  label="Recipes"
-                />
-                <NavLink
-                  to="/meal-plan"
-                  icon={<Calendar className="w-4 h-4" />}
-                  label="Meal Plan"
-                />
-                <NavLink
-                  to="/shopping-list"
-                  icon={<ShoppingCart className="w-4 h-4" />}
-                  label="Shopping"
-                />
-              </>
-            ) : (
-              <>
-                {/* <button
-                  onClick={() => navigate("/")}
-                  className="px-3 py-2 text-sm text-gray-400 hover:text-white transition"
-                >
-                  Home
-                </button>
+          {/* Navigation */}
+          <div className="hidden md:flex items-center gap-2 bg-white/[0.04] border border-white/10 rounded-full px-2 py-1">
+            {/* Public */}
+            {/* {publicLinks.map((link) => (
+              <NavLink key={link.to} {...link} active={isActive(link.to)} />
+            ))} */}
 
-                <button
-                  onClick={() => navigate("/login")}
-                  className="px-4 py-2 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition"
-                >
-                  Login
-                </button> */}
-                <>
-                  <NavLink
-                    to="/"
-                    icon={<Home className="w-4 h-4" />}
-                    label="Home"
-                  />
-                  <NavLink
-                    to="/pantry"
-                    icon={<UtensilsCrossed className="w-4 h-4" />}
-                    label="Grocery"
-                  />
-                  <NavLink
-                    to="/generate"
-                    icon={<ChefHat className="w-4 h-4" />}
-                    label="Generate"
-                  />
-                  <NavLink
-                    to="/recipes"
-                    icon={<UtensilsCrossed className="w-4 h-4" />}
-                    label="Recipes"
-                  />
-                  <NavLink
-                    to="/meal-plan"
-                    icon={<Calendar className="w-4 h-4" />}
-                    label="Meal Plan"
-                  />
-                  <NavLink
-                    to="/shopping-list"
-                    icon={<ShoppingCart className="w-4 h-4" />}
-                    label="Shopping"
-                  />
-                </>
-              </>
-            )}
+            {/* Private */}
+
+            {isAuthenticated &&
+              privateLinks.map((link) => (
+                <NavLink key={link.to} {...link} active={isActive(link.to)} />
+              ))}
           </div>
 
-          {/* User Menu */}
+          {/* User Section */}
           <div className="relative flex items-center gap-3">
             {isAuthenticated ? (
-              <>
-                {/* 🔥 Avatar Button */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setMenuOpen(!menuOpen);
-                  }}
-                  className="relative inline-flex items-center justify-start gap-2 pl-2 pr-5  h-10 rounded-full bg-gradient-to-br from-orange-500 to-pink-500  text-white font-semibold shadow-md hover:scale-105 transition"
-                >
-                  <div className="rounded-full flex justify-center items-center bg-black text-white w-8 h-8 ">
-                    {user?.name?.[0]?.toUpperCase() || "U"}
-                  </div>
-                  <div className="">
-                    {user?.name || "User"}
-                    <span className="absolute -bottom-1 -right-1 text-[10px] bg-black text-white px-1.5 py-[2px] rounded-full border border-white/10">
-                      {user?.credits}
-                      {console.log("user", user)}
-                    </span>
-                  </div>
-
-                  {/* 🔥 Credits Badge */}
-                </button>
-
-                {/* 🔥 Dropdown */}
-                <div
-                  className={`absolute right-0 top-14 w-56 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 shadow-xl overflow-hidden z-50 transition-all duration-300 ${
-                    menuOpen
-                      ? "opacity-100 translate-y-0 scale-100"
-                      : "opacity-0 -translate-y-2 scale-95 pointer-events-none"
-                  }`}
-                >
-                  {/* Profile Info */}
-                  <div className="px-4 py-3 border-b border-white/10">
-                    <p className="text-sm text-gray-400">Signed in as</p>
-                    <p className="text-white font-medium truncate">
-                      {user?.name || "User"}
-                    </p>
-                  </div>
-
-                  {/* Profile */}
-                  <button
-                    onClick={() => {
-                      navigate("/profile");
-                      setMenuOpen(false);
-                    }}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 transition"
-                  >
-                    <User className="w-4 h-4" />
-                    Profile
-                  </button>
-
-                  {/* Settings */}
-                  <Link
-                    to="/settings"
-                    onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-white/5 transition"
-                  >
-                    <Settings className="w-4 h-4" />
-                    Settings
-                  </Link>
-
-                  {/* Logout */}
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setMenuOpen(false);
-                    }}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Logout
-                  </button>
-                </div>
-              </>
+              <UserPill />
             ) : (
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/")}
                 className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition"
               >
                 <LogIn className="w-4 h-4" />
-                <span className="hidden sm:inline">SignIn</span>
+                <span className="hidden sm:inline">Sign In</span>
               </button>
             )}
           </div>
@@ -228,16 +115,79 @@ const Navbar = () => {
   );
 };
 
-const NavLink = ({ to, icon, label }) => {
+const NavLink = ({ to, icon, label, active }) => {
   return (
-    <Link
-      to={to}
-      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition"
-    >
-      {icon}
-      <span>{label}</span>
+    <Link to={to}>
+      <div
+        className={`flex md:flex-row flex-col items-center gap-1 px-4 py-1.5 rounded-full text-sm transition
+        ${
+          active
+            ? "md:bg-[#0F828C]/50 text-white shadow-md"
+            : "text-gray-400 hover:text-white"
+        }`}
+      >
+        <span
+          className={`p-2 rounded-full md:p-0 ${
+            active
+              ? "bg-emerald-500 md:bg-transparent text-white"
+              : "text-gray-400"
+          }`}
+        >
+          {icon}
+        </span>
+        <span className="hidden md:inline">{label}</span>
+      </div>
     </Link>
   );
 };
 
-export default Navbar;
+export const MobileNavbar = () => {
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path;
+
+  return (
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full z-50 flex gap-6 justify-center bg-[#050816] border border-white/15 p-4 md:hidden">
+      <NavItem
+        to="/dashboard"
+        icon={<Home />}
+        active={isActive("/dashboard")}
+      />
+      <NavItem
+        to="/pantry"
+        icon={<UtensilsCrossed />}
+        active={isActive("/pantry")}
+      />
+      <NavItem
+        to="/generate"
+        icon={<ChefHat />}
+        active={isActive("/generate")}
+      />
+      {/* <NavItem
+        to="/meal-plan"
+        icon={<Calendar />}
+        active={isActive("/meal-plan")}
+      /> */}
+      <NavItem
+        to="/recipes"
+        icon={<CookingPot />}
+        active={isActive("/recipes")}
+      />
+      <NavItem
+        to="/shopping-list"
+        icon={<ShoppingCart />}
+        active={isActive("/shopping-list")}
+      />
+    </div>
+  );
+};
+
+const NavItem = ({ to, icon, active }) => (
+  <Link to={to}>
+    <div
+      className={`p-2 rounded-full ${active ? "bg-[#0F828C] text-white" : "text-gray-400"}`}
+    >
+      {icon}
+    </div>
+  </Link>
+);

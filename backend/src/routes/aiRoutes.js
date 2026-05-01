@@ -1,6 +1,6 @@
 import express from "express";
 
-import { optionalAuth } from "../middleware/authMiddleware.js";
+import { optionalAuth, protect } from "../middleware/authMiddleware.js";
 
 import {
   generateRecipe,
@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.post("/generate", generateRecipe);
+router.post("/generate", protect, generateRecipe);
 router.post("/import-url", importRecipeFromURL);
 router.post("/cooking-tip", getCookingTip);
 

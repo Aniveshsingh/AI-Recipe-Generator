@@ -6,11 +6,7 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+    return <FullScreenLoader />;
   }
 
   if (!isAuthenticated) {
@@ -19,5 +15,14 @@ const ProtectedRoute = ({ children }) => {
 
   return children;
 };
-
+const FullScreenLoader = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#0b0b0c]">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-400 text-sm">Loading your kitchen...</p>
+      </div>
+    </div>
+  );
+};
 export default ProtectedRoute;

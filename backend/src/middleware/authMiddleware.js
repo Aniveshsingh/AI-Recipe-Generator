@@ -26,14 +26,13 @@ export const optionalAuth = async (req, _res, next) => {
 
 export const protect = async (req, res, next) => {
   try {
-    console.log("SECRET:", process.env.JWT_SECRET);
     let token;
-    console.log("Auth header:", req.headers);
+
     // Get token from header
     if (req.headers.authorization?.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1];
     }
-    console.log("Extracted token", token);
+
     // no token
     if (!token) {
       return res.status(400).json({ message: "Not authorized" });

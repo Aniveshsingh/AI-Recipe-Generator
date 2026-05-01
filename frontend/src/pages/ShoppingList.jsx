@@ -12,7 +12,7 @@ import {
   RotateCcw,
   ChefHat,
 } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { apiFetch } from "../utils/api";
@@ -125,8 +125,7 @@ const ShoppingList = () => {
   const checkedCount = items.filter((i) => i.is_checked).length;
 
   return (
-    <div className="min-h-screen bg-[#0b0b0c] text-white">
-      <Navbar />
+    <div className="min-h-screen  text-white">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

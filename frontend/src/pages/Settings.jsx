@@ -1,7 +1,7 @@
 // settings page
 import { useState, useEffect } from "react";
 import { User, Lock, Trash2, Save } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -162,46 +162,44 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
+    <div className="min-h-screen ">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-white">Settings</h1>
+          <p className="text-gray-300 mt-1">
             Manage your account and preferences
           </p>
         </div>
 
         <div className="space-y-6">
           {/* Profile Section */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <div className="bg-[#0f172a] rounded-xl border border-gray-200 p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
                 <User className="w-5 h-5 text-emerald-600" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-gray-200">
                 Profile Information
               </h2>
             </div>
 
             <form onSubmit={handleProfileUpdate} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Name
                 </label>
                 <input
                   type="text"
                   value={profile.name}
                   // onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Email
                 </label>
                 <input
@@ -211,7 +209,7 @@ const Settings = () => {
                   onChange={(e) =>
                     setProfile({ ...profile, email: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                   required
                 />
               </div>
@@ -228,19 +226,19 @@ const Settings = () => {
           </div>
 
           {/* Change Password Section */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <div className="bg-[#0f172a] rounded-xl border border-gray-200 p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 <Lock className="w-5 h-5 text-blue-600" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-gray-200">
                 Change Password
               </h2>
             </div>
 
             <form onSubmit={handlePasswordChange} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Current Password
                 </label>
                 <input
@@ -252,13 +250,13 @@ const Settings = () => {
                       currentPassword: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   New Password
                 </label>
                 <input
@@ -270,14 +268,14 @@ const Settings = () => {
                       newPassword: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                   required
                   minLength={6}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Confirm New Password
                 </label>
                 <input
@@ -289,7 +287,7 @@ const Settings = () => {
                       confirmPassword: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                   required
                   minLength={6}
                 />
@@ -307,15 +305,15 @@ const Settings = () => {
           </div>
 
           {/* Preferences Section */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          <div className="bg-[#0f172a] rounded-xl border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-200 mb-6">
               Dietary Preferences
             </h2>
 
             <form onSubmit={handlePreferencesUpdate} className="space-y-6">
               {/* Dietary Restrictions */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-gray-400 mb-3">
                   Dietary Restrictions
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -327,7 +325,7 @@ const Settings = () => {
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                         preferences.dietary_restrictions.includes(option)
                           ? "bg-emerald-500 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          : "bg-white/5 text-gray-400 hover:bg-gray-200"
                       }`}
                     >
                       {option}
@@ -338,7 +336,7 @@ const Settings = () => {
 
               {/* Allergies */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-400 mb-2">
                   Allergies (comma-separated)
                 </label>
                 <input
@@ -354,13 +352,13 @@ const Settings = () => {
                     })
                   }
                   placeholder="e.g., peanuts, shellfish, soy"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                 />
               </div>
 
               {/* Preferred Cuisines */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-gray-200 mb-3">
                   Preferred Cuisines
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -372,7 +370,7 @@ const Settings = () => {
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                         preferences.preferred_cuisines.includes(cuisine)
                           ? "bg-emerald-500 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          : "bg-white/5 text-gray-400 hover:bg-gray-200"
                       }`}
                     >
                       {cuisine}
@@ -383,7 +381,7 @@ const Settings = () => {
 
               {/* Default Servings */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Default Servings: {preferences.default_servings}
                 </label>
                 <input
@@ -407,7 +405,7 @@ const Settings = () => {
 
               {/* Measurement Unit */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Measurement Unit
                 </label>
                 <div className="flex gap-3">
@@ -422,7 +420,7 @@ const Settings = () => {
                     className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                       preferences.measurement_unit === "metric"
                         ? "bg-emerald-500 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        : "bg-white/5 text-gray-400 hover:bg-gray-200"
                     }`}
                   >
                     Metric (kg, L)
@@ -438,7 +436,7 @@ const Settings = () => {
                     className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                       preferences.measurement_unit === "imperial"
                         ? "bg-emerald-500 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        : "bg-white/5 text-gray-400 hover:bg-gray-200"
                     }`}
                   >
                     Imperial (lb, gal)
@@ -458,17 +456,17 @@ const Settings = () => {
           </div>
 
           {/* Danger Zone */}
-          <div className="bg-white rounded-xl border border-red-200 p-6">
+          <div className="bg-[#0f172a] rounded-xl border border-red-200 p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
                 <Trash2 className="w-5 h-5 text-red-600" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-gray-200">
                 Danger Zone
               </h2>
             </div>
 
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-400 mb-4">
               Once you delete your account, there is no going back. All your
               recipes, meal plans, and data will be permanently deleted.
             </p>
