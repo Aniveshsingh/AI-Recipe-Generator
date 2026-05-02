@@ -8,6 +8,7 @@ import {
   ShoppingCart,
   LogIn,
   CookingPot,
+  LayoutDashboard,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import UserPill from "./UserPill";
@@ -36,7 +37,7 @@ export const Navbar = () => {
     {
       label: "Dashboard",
       to: "/dashboard",
-      icon: <Home className="w-4 h-4" />,
+      icon: <LayoutDashboard className="w-4 h-4" />,
     },
     {
       label: "Pantry",
@@ -150,7 +151,7 @@ export const MobileNavbar = () => {
     <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full z-50 flex gap-6 justify-center bg-[#050816] border border-white/15 p-4 md:hidden">
       <NavItem
         to="/dashboard"
-        icon={<Home />}
+        icon={<LayoutDashboard />}
         active={isActive("/dashboard")}
       />
       <NavItem

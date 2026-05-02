@@ -40,9 +40,9 @@ const MiseEnPlace = ({ recipe, onStart }) => {
     <div className="min-h-screen bg-[#0b0b0c] text-white flex flex-col">
       {/* Header */}
       <div className="text-center pt-10 pb-6 px-4">
-        <h1 className="text-2xl font-bold text-white mb-1">Mise en Place</h1>
+        <h1 className="text-2xl font-bold text-white mb-1">Chef's Prep Zone</h1>
         <p className="text-gray-500 text-sm">
-          Gather and prep your ingredients before you start cooking.
+          Gather and prep your ingredients before the Flame.
         </p>
       </div>
 
@@ -126,7 +126,7 @@ const MiseEnPlace = ({ recipe, onStart }) => {
       </div>
 
       {/* Skip & Start */}
-      <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-8 pt-4 bg-gradient-to-t from-[#0b0b0c] to-transparent">
+      <div className="fixed bottom-13 left-0 right-0 flex justify-center pb-8 pt-4 bg-gradient-to-t from-[#0b0b0c] to-transparent">
         <button
           onClick={onStart}
           className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-4 rounded-full shadow-xl shadow-orange-500/30 transition text-sm"
@@ -141,8 +141,7 @@ const MiseEnPlace = ({ recipe, onStart }) => {
 // ─── Step Screen ──────────────────────────────
 const StepScreen = ({ recipe, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [muted, setMuted] = useState(false);
-  const [micOn, setMicOn] = useState(false);
+
   const [showTip, setShowTip] = useState(false);
   const [tip, setTip] = useState("");
   const [loadingTip, setLoadingTip] = useState(false);
@@ -243,26 +242,6 @@ const StepScreen = ({ recipe, onClose }) => {
         {/* Controls */}
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setMuted((m) => !m)}
-            className="text-gray-500 hover:text-white transition"
-          >
-            {muted ? (
-              <VolumeX className="w-4 h-4" />
-            ) : (
-              <Volume2 className="w-4 h-4" />
-            )}
-          </button>
-          <button
-            onClick={() => setMicOn((m) => !m)}
-            className="text-gray-500 hover:text-white transition"
-          >
-            {micOn ? (
-              <Mic className="w-4 h-4 text-orange-400" />
-            ) : (
-              <MicOff className="w-4 h-4" />
-            )}
-          </button>
-          <button
             onClick={() => {
               const secs = prompt("Set timer (seconds):");
               if (secs && !isNaN(secs)) {
@@ -335,8 +314,8 @@ const StepScreen = ({ recipe, onClose }) => {
 // ─── Done Screen ──────────────────────────────
 const DoneScreen = ({ recipe, onBack }) => (
   <div className="fixed inset-0 bg-[#070b14] text-white flex flex-col items-center justify-center z-50 text-center px-6">
-    <div className="w-20 h-20 rounded-2xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center mb-6">
-      <ChefHat className="w-10 h-10 text-orange-400" />
+    <div className="w-20 h-20 rounded-2xl bg-emerald-500/20 border border-orange-500/30 flex items-center justify-center mb-6">
+      <ChefHat className="w-10 h-10 text-emerald-400" />
     </div>
     <h1 className="text-4xl font-bold text-white mb-3">Bon Appétit! 🎉</h1>
     <p className="text-gray-400 text-lg mb-8">
@@ -345,7 +324,7 @@ const DoneScreen = ({ recipe, onBack }) => (
     </p>
     <button
       onClick={onBack}
-      className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-xl transition shadow-lg shadow-orange-500/20"
+      className="bg-emerald-500 hover:bg-emerald-700 text-white font-semibold px-8 py-3 rounded-xl transition shadow-lg shadow-orange-500/20"
     >
       Back to Recipe
     </button>

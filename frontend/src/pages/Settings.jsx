@@ -174,7 +174,7 @@ const Settings = () => {
 
         <div className="space-y-6">
           {/* Profile Section */}
-          <div className="bg-[#0f172a] rounded-xl border border-gray-200 p-6">
+          <div className="bg-[#0f172a] rounded-xl border border-gray-200/30 p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
                 <User className="w-5 h-5 text-emerald-600" />
@@ -193,7 +193,7 @@ const Settings = () => {
                   type="text"
                   value={profile.name}
                   // onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring focus:ring-orange-400 outline-none"
                   required
                 />
               </div>
@@ -209,7 +209,7 @@ const Settings = () => {
                   onChange={(e) =>
                     setProfile({ ...profile, email: e.target.value })
                   }
-                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring focus:ring-orange-400 outline-none"
                   required
                 />
               </div>
@@ -226,7 +226,7 @@ const Settings = () => {
           </div>
 
           {/* Change Password Section */}
-          <div className="bg-[#0f172a] rounded-xl border border-gray-200 p-6">
+          <div className="bg-[#0f172a] rounded-xl border border-gray-200/30 p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 <Lock className="w-5 h-5 text-blue-600" />
@@ -250,7 +250,7 @@ const Settings = () => {
                       currentPassword: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring focus:ring-orange-400 outline-none"
                   required
                 />
               </div>
@@ -268,7 +268,7 @@ const Settings = () => {
                       newPassword: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring focus:ring-orange-400 outline-none"
                   required
                   minLength={6}
                 />
@@ -287,7 +287,7 @@ const Settings = () => {
                       confirmPassword: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-gray-200 rounded-lg focus:ring focus:ring-orange-400 outline-none"
                   required
                   minLength={6}
                 />
@@ -305,7 +305,7 @@ const Settings = () => {
           </div>
 
           {/* Preferences Section */}
-          <div className="bg-[#0f172a] rounded-xl border border-gray-200 p-6">
+          <div className="bg-[#0f172a] rounded-xl border border-gray-200/30 p-6">
             <h2 className="text-xl font-semibold text-gray-200 mb-6">
               Dietary Preferences
             </h2>
@@ -352,7 +352,7 @@ const Settings = () => {
                     })
                   }
                   placeholder="e.g., peanuts, shellfish, soy"
-                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  className="w-full px-3 py-2 bg-[#0d1117]/80 border border-white/10 text-gray-200 rounded-lg focus:ring focus:ring-orange-400 outline-none"
                 />
               </div>
 
@@ -456,7 +456,7 @@ const Settings = () => {
           </div>
 
           {/* Danger Zone */}
-          <div className="bg-[#0f172a] rounded-xl border border-red-200 p-6">
+          <div className="bg-[#0f172a] rounded-xl border border-red-200/30 p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
                 <Trash2 className="w-5 h-5 text-red-600" />

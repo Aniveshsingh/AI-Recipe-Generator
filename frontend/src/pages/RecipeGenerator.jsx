@@ -316,7 +316,7 @@ const RecipeResult = ({
             onChange={(e) => setRefineText(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleRefine()}
             placeholder="e.g. 'Make it spicy', 'Swap salmon for chicken', 'Elevate to Michelin-star quality'..."
-            className="flex-1 bg-[#0d1117] border border-white/10 text-gray-300 text-sm px-4 py-3 rounded-xl outline-none focus:border-orange-500/50 placeholder-gray-600 transition"
+            className="flex-1 min-w-0 bg-[#0d1117] border border-white/10 text-gray-300 text-sm px-4 py-3 rounded-xl outline-none focus:border-orange-500/50 placeholder-gray-600 transition"
           />
           <button
             onClick={handleRefine}
@@ -619,20 +619,7 @@ const RecipeGenerator = () => {
 
   return (
     <div className="min-h-screen  text-white">
-      {/* NEW CHAT button */}
-      {generatedRecipe && (
-        <div className="fixed top-20 right-6 z-40">
-          <button
-            onClick={handleNewChat}
-            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg shadow-orange-500/30 transition"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            NEW CHAT
-          </button>
-        </div>
-      )}
-
-      <div className="max-w-4xl mx-auto px-4 pt-22 pb-20">
+      <div className="max-w-4xl mx-auto px-4 pt-16 pb-20">
         {/* ── Hero Title ── */}
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-white tracking-tight">
@@ -683,44 +670,68 @@ const RecipeGenerator = () => {
         {/* ── Input Bar ── */}
         <div className="relative mb-4" ref={advancedRef}>
           {/* Advanced Prompts Panel */}
+
           {showAdvanced && (
-            <div className="absolute bottom-full mb-2 left-0 right-0 bg-[#0d1117] border border-white/10 rounded-2xl p-5 z-50 shadow-2xl">
-              <p className="text-orange-400 text-xs font-bold tracking-widest uppercase mb-4">
-                Advanced Prompts
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-3">
-                {ADVANCED_PROMPTS.map((p, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleAdvancedPrompt(p)}
-                    className="text-left text-sm text-gray-300 hover:text-white transition py-0.5"
-                  >
-                    {p}
-                  </button>
-                ))}
+            <div
+              className=" absolute z-50
+      bottom-26 right-0   
+      w-64 max-h-64 overflow-y-auto
+      bg-[#0d1117] border border-white/10 rounded-xl p-4 shadow-2xl
+
+      md:bottom-full md:right-auto md:left-0 md:w-full md:max-h-none md:overflow-visible md:rounded-2xl md:p-5
+    "
+            >
+              <div className="flex items-center justify-between px-4 border-b border-white/20 py-2 ">
+                <p className="text-orange-400 text-xs font-bold tracking-widest uppercase">
+                  Advanced Prompts
+                </p>
+
+                <button
+                  onClick={() => setShowAdvanced(false)}
+                  className="text-gray-500 hover:text-white transition"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* 🔹 SCROLLABLE CONTENT */}
+              <div className="max-h-66 overflow-y-auto sm:overflow-hidden p-4">
+                <div className="flex flex-col gap-2 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-6 md:gap-y-3">
+                  {ADVANCED_PROMPTS.map((p, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleAdvancedPrompt(p)}
+                      className="text-left text-sm text-gray-300 hover:text-white transition"
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-3 bg-[#0f172a] border border-white/10 rounded-2xl px-4 py-3 shadow-xl focus-within:border-orange-500/40 transition">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
-              placeholder='e.g. "Cozy salmon dinner under 400 calories with dill"'
-              className="flex-1 bg-transparent text-sm outline-none text-gray-200 placeholder-gray-600"
-            />
-            {inputValue && (
-              <button
-                onClick={() => setInputValue("")}
-                className="mr-2 text-gray-600 hover:text-gray-400 transition"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-[#0f172a] border border-white/10 rounded-2xl px-4 py-3 shadow-xl focus-within:border-orange-500/40 transition">
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
+                placeholder='e.g. "Cozy salmon dinner under 400 calories with dill"'
+                className="w-full pr-10 bg-transparent text-sm outline-none text-gray-200 placeholder-gray-600"
+              />
+              {inputValue && (
+                <button
+                  onClick={() => setInputValue("")}
+                  className="absolute right-2  top-1/2 -translate-y-1/2 text-gray-600  hover:text-gray-400 transition"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
             {/* Advanced prompts toggle */}
-            <div className="flex justify-end items-center">
+            <div className="flex shrink-0 justify-end items-center gap-2 w-full sm:w-auto">
               <button
                 onClick={() => setShowAdvanced(!showAdvanced)}
                 className="w-6 h-6 rounded-full border border-gray-700 flex items-center justify-center mr-3 hover:border-orange-400 transition text-gray-500 hover:text-orange-400"
@@ -736,7 +747,7 @@ const RecipeGenerator = () => {
                   handleGenerate();
                 }}
                 title={!isAuthenticated ? "Login to generate recipes" : ""}
-                className={`w-[50%] sm:w-auto flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold transition shadow-lg
+                className={`min-w-[50%]  sm:w-auto flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold transition shadow-lg
     ${
       !isAuthenticated
         ? "opacity-60 cursor-not-allowed bg-[#0F828C]/50 text-white"
@@ -753,7 +764,7 @@ const RecipeGenerator = () => {
 
         {/* ── Filter Panel ── */}
         <div className="bg-[#0f172a] border border-white/10 rounded-2xl px-5 py-4 mb-6">
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-5 items-end">
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-5 items-end">
             <FilterDropdown
               label="Cuisine"
               value={filters.cuisine}
@@ -918,7 +929,18 @@ const RecipeGenerator = () => {
 
         {/* ── Recipe Result ── */}
         {generatedRecipe && !generating && (
-          <div ref={resultRef}>
+          <div ref={resultRef} className="relative">
+            {generatedRecipe && (
+              <div className=" absolute  -top-1 right-0 z-10">
+                <button
+                  onClick={handleNewChat}
+                  className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg shadow-orange-500/30 transition"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  NEW CHAT
+                </button>
+              </div>
+            )}
             <RecipeResult
               recipe={generatedRecipe}
               cached={wasCached}

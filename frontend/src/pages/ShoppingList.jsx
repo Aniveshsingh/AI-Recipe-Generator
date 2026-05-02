@@ -183,7 +183,7 @@ const ShoppingList = () => {
               </div>
               <button
                 onClick={handleAddCustom}
-                className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2.5 rounded-xl transition"
+                className="w-full flex items-center justify-center gap-2 bg-orange-500/20 border border-orange-400 hover:bg-orange-400 text-white text-sm font-semibold py-2.5 rounded-xl transition"
               >
                 <Plus className="w-4 h-4" /> Add to List
               </button>

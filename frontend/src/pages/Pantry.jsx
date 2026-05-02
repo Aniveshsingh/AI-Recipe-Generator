@@ -111,7 +111,7 @@ const Pantry = () => {
           <div className="flex justify-end mt-10">
             <button
               onClick={() => setShowAddModal(true)}
-              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors"
+              className="flex items-center gap-2 bg-orange-500/20 border border-orange-500 hover:bg-orange-400 text-white px-4 py-2.5 rounded-lg font-medium transition-colors"
             >
               <Plus className="w-5 h-5" />
               Add Item
@@ -148,7 +148,7 @@ const Pantry = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search ingredients..."
-                className="w-full pl-10 pr-4 py-2 bg-[#0d1117] border border-white/10 text-gray-200 text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                className="w-full pl-10 pr-4 py-2 bg-[#0d1117] border border-white/10 text-gray-200 text-sm rounded-lg focus:ring focus:ring-orange-400  outline-none"
               />
             </div>
 
@@ -210,7 +210,7 @@ const CategoryButton = ({ label, active, onClick }) => (
     className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
       active
         ? "bg-emerald-500 text-white"
-        : "bg-white/5 text-gray-400 hover:bg-gray-200"
+        : "bg-white/5 text-gray-400 hover:border border-orange-400"
     }`}
   >
     {label}
@@ -340,7 +340,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
                 setFormData({ ...formData, name: e.target.value })
               }
               placeholder="Enter name"
-              className={`w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white placeholder:text-gray-500 text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none`}
+              className={`w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white placeholder:text-gray-500 text-sm rounded-lg focus:ring focus:ring-orange-400  outline-none`}
               required
             />
           </div>
@@ -358,7 +358,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
                   setFormData({ ...formData, quantity: e.target.value })
                 }
                 placeholder="0"
-                className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 placeholder:text-gray-500 text-white text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 placeholder:text-gray-500 text-white text-sm rounded-lg focus:ring focus:ring-orange-400 outline-none"
                 required
               />
             </div>
@@ -373,7 +373,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
                   setFormData({ ...formData, unit: e.target.value })
                 }
                 placeholder="Pieces"
-                className="relative w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                className="relative w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white text-sm rounded-lg focus:ring focus:ring-orange-400 outline-none"
               >
                 <option value="pieces">Pieces</option>
                 <option value="kg">Kilograms</option>
@@ -396,7 +396,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white/80 text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+              className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white/80 text-sm rounded-lg focus:ring focus:ring-orange-400 outline-none"
             >
               {CATEGORIES.map((cat) => (
                 <option key={cat} value={cat}>
@@ -416,7 +416,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
               onChange={(e) =>
                 setFormData({ ...formData, expiry_date: e.target.value })
               }
-              className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white/80 text-sm rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+              className="w-full px-3 py-2 bg-[#0d1117] border border-white/10 text-white/80 text-sm rounded-lg focus:ring focus:ring-orange-400  outline-none"
             />
           </div>
 
@@ -428,9 +428,9 @@ const AddItemModal = ({ onClose, onSuccess }) => {
               onChange={(e) =>
                 setFormData({ ...formData, is_running_low: e.target.checked })
               }
-              className="w-4 h-4 text-emerald-500 border-gray-300 rounded focus:ring-emerald-500"
+              className="w-4 h-4 text-emerald-500 border-gray-300 rounded focus:ring-orange-400"
             />
-            <label htmlFor="running-low" className="text-sm text-gray-700">
+            <label htmlFor="running-low" className="text-sm text-gray-500">
               Mark as running low
             </label>
           </div>
@@ -439,7 +439,7 @@ const AddItemModal = ({ onClose, onSuccess }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+              className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-400 rounded-lg hover:bg-gray-50 font-medium transition-colors"
             >
               Cancel
             </button>

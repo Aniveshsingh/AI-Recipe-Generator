@@ -54,7 +54,7 @@ export default function Landing() {
   return (
     <div className="relative bg-[#050816] text-white overflow-hidden max-w-screen mx-auto px-5 sm:px-6 lg:px-8">
       {/* ================= HERO ================= */}
-      <section className="pt-28 pb-24 px-6">
+      <section className="pt-10 pb-24 px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           <div>
             {/* <p className="text-sm text-gray-400 mb-6">

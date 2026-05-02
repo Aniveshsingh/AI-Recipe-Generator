@@ -22,6 +22,7 @@ import {
   BookmarkPlus,
   RotateCcw,
   FileText,
+  CookingPot,
 } from "lucide-react";
 
 import toast from "react-hot-toast";
@@ -231,10 +232,10 @@ const RecipeDetail = () => {
 
       <div className="max-w-5xl mx-auto px-4 py-8">
         {/* ── Hero Image ── */}
-        {recipe.image ? (
+        {recipe.image_url ? (
           <div className="w-full h-72 md:h-96 rounded-2xl overflow-hidden mb-6">
             <img
-              src={recipe.image}
+              src={recipe.image_url}
               alt={recipe.name}
               className="w-full h-full object-cover"
             />
@@ -273,7 +274,7 @@ const RecipeDetail = () => {
           </div>
         ) : (
           <div className="w-full h-48 rounded-2xl bg-gradient-to-br from-orange-500/10 to-purple-500/10 border border-white/5 flex items-center justify-center mb-6">
-            <ChefHat className="w-16 h-16 text-orange-500/20" />
+            <CookingPot className="w-16 h-16 text-orange-400/70" />
           </div>
         )}
 
@@ -373,10 +374,10 @@ const RecipeDetail = () => {
           {/* Start Cooking */}
           <button
             onClick={() => navigate(`/recipes/${id}/cook`)}
-            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg shadow-orange-500/20"
+            className="flex items-center gap-2 bg-orange-500/20 border border-orange-500/30 text-orange-400  hover:bg-orange-600  font-semibold px-6 py-3 rounded-xl transition shadow-lg "
           >
             <Play className="w-4 h-4" />
-            Start 360° Cooking Mode
+            SmartChef Mode
           </button>
         </div>
 
@@ -547,9 +548,9 @@ const RecipeDetail = () => {
                 ]);
                 setComment("");
               }}
-              className="w-10 h-10 flex items-center justify-center bg-orange-500 hover:bg-orange-600 rounded-xl transition"
+              className="w-10 h-10 flex items-center justify-center bg-orange-500/20 hover:bg-orange-600 rounded-xl transition"
             >
-              <Send className="w-4 h-4 text-white" />
+              <Send className="w-4 h-4 text-orange-400" />
             </button>
           </div>
           {comments.length > 0 ? (

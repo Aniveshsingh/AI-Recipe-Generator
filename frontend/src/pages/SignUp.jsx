@@ -35,26 +35,6 @@ const SignUp = () => {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className=" flex justify-between">
-            <span
-              className="text-gray-400 flex items-center gap-1 cursor-pointer hover:text-gray-100"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              <ArrowLeft size={20} />
-              Back
-            </span>
-            <span
-              className="text-gray-400 flex items-center gap-1 cursor-pointer hover:text-gray-100"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              <Home size={20} />
-              Home
-            </span>
-          </div>
           <div
             className="inline-flex items-center justify-center w-16 h-16 bg-[#0F828C] rounded-2xl mb-4"
             onClick={() => navigate("/")}

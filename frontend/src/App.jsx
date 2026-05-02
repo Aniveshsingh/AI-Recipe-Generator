@@ -51,12 +51,14 @@ function App() {
           <Route element={<LandingLayout />}>
             <Route path="/" element={<LandingPage />} />
             <Route path="/explore" element={<Explore />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
             {/* <Route path="/generate" element={<RecipeGenerator />} /> */}
           </Route>
 
           {/* 🔐 AUTH (no navbar) */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          {/* <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} /> */}
 
           {/* 🚀 APP LAYOUT (protected) */}
           <Route
