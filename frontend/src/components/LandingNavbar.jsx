@@ -42,7 +42,7 @@ export const LandingNavbar = () => {
           {/* Desktop Nav */}
           <div className="hidden md:flex justify-center items-center gap-2 bg-white/[0.04] border border-white/10 rounded-full px-2 py-1">
             <NavItem
-              icon={<Home size={14} />}
+              icon={<Home />}
               text="Home"
               active={isActive("/")}
               to="/"
