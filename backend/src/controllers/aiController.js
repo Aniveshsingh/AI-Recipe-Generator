@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import GeneratedRecipe from "../models/GeneratedRecipe.model.js";
 // import AnonUsage from "../models/AnonUsage.model.js";
+import { recipeAgent } from "../services/agents/recipeAgent.js";
 
 const TOKENS_PER_CREDIT = 30;
 const DAILY_CREDITS = 100;
@@ -451,26 +452,21 @@ export const generateRecipe = async (req, res) => {
       currentRecipe,
     });
 
-    const { text, tokens } = await generateRecipeText(prompt);
-
-    if (!text || text.trim() === "") {
-      throw new Error("Empty AI response");
-    }
-
-    let recipe;
-
-    try {
-      recipe = safeParse(text);
-    } catch {
-      console.error("RAW AI:", text);
-      return res.status(500).json({ message: "Invalid AI response format" });
-    }
-
-    recipe = {
-      ...recipe,
-      prepTime: recipe.prepTime ?? recipe.prep_time ?? 0,
-      cookTime: recipe.cookTime ?? recipe.cook_time ?? 0,
-    };
+    const { recipe, tokens } = await recipeAgent({
+      buildPrompt,
+      generateRecipeText,
+      safeParse,
+      input: {
+        mode,
+        userPrompt,
+        cuisine,
+        diet,
+        servings,
+        cookingTime,
+        refineRequest,
+        currentRecipe,
+      },
+    });
 
     // Deduct credits based on completion tokens
     if (isAuthed) {
